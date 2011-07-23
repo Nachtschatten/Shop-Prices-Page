@@ -1,6 +1,6 @@
 (function() {
   var Item, cache, form, input;
-  form = '<form id=search>\n	<input type=text autofocus=autofocus style="background-image:url(Icons/search.png); background-repeat:no-repeat; padding-left:17px;">\n</form>';
+  form = '<form id=search>\n	<input type=text autofocus=autofocus>\n</form>';
   $('div#searchfield').append(form);
   form = $('#search');
   input = $('input', form);
