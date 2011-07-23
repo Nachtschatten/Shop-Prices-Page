@@ -1,7 +1,7 @@
 (function() {
   var Item, cache, form, input;
   form = '<form id=search>\n	<input type=text autofocus=autofocus><button type=submit>Suchen</button>\n</form>';
-  $('body > div:first').append(form);
+  $('body > div').eq(0).append(form);
   form = $('#search');
   input = $('input', form);
   cache = [];
@@ -11,12 +11,10 @@
       this.element = img.parent().parent();
     }
     Item.prototype.highlight = function(flag) {
-      var color;
-      color = flag ? '#B0E0E6' : 'transparent';
-      return this.element.css('background-color', color);
+      return this.element.css('opacity', flag ? '1.0' : '0.1');
     };
     Item.prototype.test = function(str) {
-      return this.highlight(str.length !== 0 && this.title.toLowerCase().indexOf(str.toLowerCase()) !== -1);
+      return this.highlight(str.length === 0 || this.title.toLowerCase().indexOf(str.toLowerCase()) !== -1);
     };
     return Item;
   })();
