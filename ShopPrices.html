@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<script type="text/javascript" src="priceInfo.js"></script>
+		<title>Shop-Preisliste</title>
+		<style type="text/css">
+			div.product { border:0px solid #F5F5F5; float:left; margin:1px; }
+			div.priceL, div.priceR { float:left; width:5em; height:3em; line-height:1.5em; }
+			div.priceL { text-align:right; }
+			div.priceR { text-align:left; }
+			div.icon { float:left; width:32px; line-height:3em; }
+			div.icon > img { vertical-align:middle; width:32px; height:32px; }
+			div.product span { color:gray; }
+			div.spacer { clear:left; height:1.2em; }
+		</style>
+	</head>
+	<body>
+		<h1 style="text-align:center; background-color:#D3D3DE; padding-bottom:0.1em;">Shop-Preisliste</h1>
+		<div style="text-align:center; margin-bottom:1em;">
+			<strong style="color:red;">Осторожно! Der Shop ist noch nicht eröffnet, alle Preise sind Fantasie-Zahlen!</strong>
+		</div>
+
+		<div class="product">
+			<div class="priceL">
+				1 kaufen<br>
+				<span>64 kaufen</span>
+			</div>
+			<div class="icon">
+				<img src="Icons/unknown.png" alt="Beliebige Ware" title="Beliebige Ware">
+			</div>
+			<div class="priceR">
+				1 verkaufen<br>
+				<span>64 verkaufen</span>
+			</div>
+		</div>
+
+		<div class="spacer"></div>
+
+		<div id="blockPrices"></div>
+
+		<script type="text/javascript">
+		<!--
+			var blockPrices = document.getElementById( "blockPrices" );
+			for( var block in blocks ) {
+				var buy = Math.floor(Math.random()*1000);
+				var buy64 = Math.floor(Math.random()*10001);
+				var sell = Math.floor(Math.random()*1000);
+				var sell64 = Math.floor(Math.random()*10000);
+				var blockDiv = generatePriceInfoDiv( getBlockName( block ), getBlockIcon( block ), buy, buy64, sell, sell64 );
+				blockPrices.appendChild( blockDiv );
+			}
+		//-->
+		</script>
+
+		<div class="spacer"></div>
+
+		<div id="itemPrices"></div>
+
+		<script type="text/javascript">
+		<!--
+			var itemPrices = document.getElementById( "itemPrices" );
+			for( var item in items ) {
+				var buy = Math.floor(Math.random()*1000);
+				var buy64 = Math.floor(Math.random()*10001);
+				var sell = Math.floor(Math.random()*1000);
+				var sell64 = Math.floor(Math.random()*10000);
+				var itemDiv = generatePriceInfoDiv( getItemName( item ), getItemIcon( item ), buy, buy64, sell, sell64 );
+				itemPrices.appendChild( itemDiv );
+			}
+		//-->
+		</script>
+
+		<div style="clear:left; height:1em;"></div>
+
+		<p style="float:right">
+			<a href="http://jigsaw.w3.org/css-validator/check/referer">
+				<img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS level 2.1">
+			</a>
+		</p>
+		<p style="float:right">
+			<a href="http://validator.w3.org/check?uri=referer">
+				<img src="http://www.w3.org/Icons/valid-html401-blue" alt="Valid HTML 4.01 Strict" height="31" width="88">
+			</a>
+		</p>
+
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="search.js"></script>
+	</body>
+</html>
