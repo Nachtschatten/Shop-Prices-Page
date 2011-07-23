@@ -5,6 +5,9 @@
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 		<title>Shop-Preisliste</title>
 		<style type="text/css">
+			div#header { margin:auto; width:27em; }
+			div#searchfield { line-height:3em; }
+			div#searchfield input { margin-left:2em; width:12em; }
 			div.product { border:0px solid #F5F5F5; float:left; margin:1px; }
 			div.priceL, div.priceR { float:left; width:5em; height:3em; line-height:1.5em; }
 			div.priceL { text-align:right; }
@@ -21,18 +24,21 @@
 			<strong style="color:red;">Achtung! Der Shop ist noch nicht eröffnet, alle Preise sind Fantasie-Zahlen!</strong>
 		</div>
 
-		<div class="product" id="example">
-			<div class="priceL">
-				1 kaufen<br>
-				<span>64 kaufen</span>
+		<div id="header">
+			<div class="product" id="example">
+				<div class="priceL">
+					1 kaufen<br>
+					<span>64 kaufen</span>
+				</div>
+				<div class="icon">
+					<img src="Icons/unknown.png" alt="Beliebige Ware" title="Beliebige Ware">
+				</div>
+				<div class="priceR">
+					1 verkaufen<br>
+					<span>64 verkaufen</span>
+				</div>
 			</div>
-			<div class="icon">
-				<img src="Icons/unknown.png" alt="Beliebige Ware" title="Beliebige Ware">
-			</div>
-			<div class="priceR">
-				1 verkaufen<br>
-				<span>64 verkaufen</span>
-			</div>
+			<div id="searchfield"></div>
 		</div>
 
 		<div class="spacer"></div>
