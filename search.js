@@ -20,10 +20,7 @@
     };
     return Item;
   })();
-  $('#blockPrices .product img').each(function() {
-    return cache.push(new Item($(this)));
-  });
-  $('#itemPrices .product img').each(function() {
+  $('.product img').not('#example img').each(function() {
     return cache.push(new Item($(this)));
   });
   form.submit(function(event) {
