@@ -3,7 +3,6 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-		<script type="text/javascript" src="priceInfo.js"></script>
 		<title>Shop-Preisliste</title>
 		<style type="text/css">
 			div.product { border:0px solid #F5F5F5; float:left; margin:1px; }
@@ -40,37 +39,9 @@
 
 		<div id="blockPrices"></div>
 
-		<script type="text/javascript">
-		<!--
-			var blockPrices = document.getElementById( "blockPrices" );
-			for( var block in blocks ) {
-				var buy = Math.floor(Math.random()*1000);
-				var buy64 = Math.floor(Math.random()*10001);
-				var sell = Math.floor(Math.random()*1000);
-				var sell64 = Math.floor(Math.random()*10000);
-				var blockDiv = generatePriceInfoDiv( getBlockName( block ), getBlockIcon( block ), buy, buy64, sell, sell64 );
-				blockPrices.appendChild( blockDiv );
-			}
-		//-->
-		</script>
-
 		<div class="spacer"></div>
 
 		<div id="itemPrices"></div>
-
-		<script type="text/javascript">
-		<!--
-			var itemPrices = document.getElementById( "itemPrices" );
-			for( var item in items ) {
-				var buy = Math.floor(Math.random()*1000);
-				var buy64 = Math.floor(Math.random()*10001);
-				var sell = Math.floor(Math.random()*1000);
-				var sell64 = Math.floor(Math.random()*10000);
-				var itemDiv = generatePriceInfoDiv( getItemName( item ), getItemIcon( item ), buy, buy64, sell, sell64 );
-				itemPrices.appendChild( itemDiv );
-			}
-		//-->
-		</script>
 
 		<div style="clear:left; height:1em;"></div>
 
@@ -86,6 +57,7 @@
 		</p>
 
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="priceInfo.js"></script>
 		<script type="text/javascript" src="search.js"></script>
 	</body>
 </html>

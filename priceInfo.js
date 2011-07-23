@@ -46,42 +46,32 @@ function getItemIcon( idAndValue ) {
 }
 
 function generatePriceInfoDiv( name, icon, buy, buy64, sell, sell64 ) {
-	var buyText = document.createTextNode( buy );
-	var buy64Text = document.createTextNode( buy64 );
-	var buy64Span = document.createElement( "span" );
-	buy64Span.appendChild( buy64Text );
+	var price = function(c, p, p64) {
+		return '<div class=' + c + '>' + p + '<br><span>' + p64 + '</span></div>';
+	};
+	var priceLDiv = price('priceL', buy, buy64);
+	var iconDiv = '<div class=icon><img src="' + icon + '" alt="' + name + '" title="' + name + '"></div>';
+	var priceRDiv = price('priceR', sell, sell64);
 
-	var priceLDiv = document.createElement( "div" );
-	priceLDiv.className = "priceL";
-	priceLDiv.appendChild( buyText );
-	priceLDiv.appendChild( document.createElement( "br" ) );
-	priceLDiv.appendChild( buy64Span );
-	
-	var iconImage = document.createElement( "img" );
-	iconImage.src = icon;
-	iconImage.alt = name;
-	iconImage.title = name;
-	var iconDiv = document.createElement( "div" );
-	iconDiv.className = "icon";
-	iconDiv.appendChild( iconImage );
-	
-	var sellText = document.createTextNode( sell );
-	var sell64Text = document.createTextNode( sell64 );
-	var sell64Span = document.createElement( "span" );
-	sell64Span.appendChild( sell64Text );
-	
-	var priceRDiv = document.createElement( "div" );
-	priceRDiv.className = "priceR";
-	priceRDiv.appendChild( sellText );
-	priceRDiv.appendChild( document.createElement( "br" ) );
-	priceRDiv.appendChild( sell64Span );
+	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
+}
 
-	var productDiv = document.createElement( "div" );
-	productDiv.className = "product";
-	
-	productDiv.appendChild( priceLDiv );
-	productDiv.appendChild( iconDiv );
-	productDiv.appendChild( priceRDiv );
-	
-	return productDiv;
+var blockPrices = $('#blockPrices');
+for( var block in blocks ) {
+	var buy = Math.floor(Math.random()*1000);
+	var buy64 = Math.floor(Math.random()*10001);
+	var sell = Math.floor(Math.random()*1000);
+	var sell64 = Math.floor(Math.random()*10000);
+	var blockDiv = generatePriceInfoDiv( getBlockName( block ), getBlockIcon( block ), buy, buy64, sell, sell64 );
+	blockPrices.append( blockDiv );
+}
+
+var itemPrices = $( "#itemPrices" );
+for( var item in items ) {
+	var buy = Math.floor(Math.random()*1000);
+	var buy64 = Math.floor(Math.random()*10001);
+	var sell = Math.floor(Math.random()*1000);
+	var sell64 = Math.floor(Math.random()*10000);
+	var itemDiv = generatePriceInfoDiv( getItemName( item ), getItemIcon( item ), buy, buy64, sell, sell64 );
+	itemPrices.append( itemDiv );
 }
