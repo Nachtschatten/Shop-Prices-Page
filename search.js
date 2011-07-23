@@ -1,7 +1,7 @@
 (function() {
   var Item, cache, form, input;
-  form = '<form id=search>\n	<input type=text autofocus=autofocus>\n</form>';
-  $('div#searchfield').append(form);
+  form = '<form id=search>\n	<input type=text>\n</form>';
+  $('#searchfield').append(form);
   form = $('#search');
   input = $('input', form);
   cache = [];
