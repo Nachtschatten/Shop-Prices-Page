@@ -1,0 +1,49 @@
+#header {
+	margin: auto;
+	width: 27em;
+}
+#searchfield {
+	line-height: 3em;
+}
+#searchfield input {
+	background-image: url(Icons/search.png);
+	background-repeat: no-repeat;
+	padding-left: 17px;
+	border: 1px solid #CCCCCC;
+	margin-left: 2em;
+	width: 12em;
+}
+.product {
+	border: 0px solid #F5F5F5;
+	float: left;
+	margin: 1px;
+}
+.priceL, .priceR {
+	float: left;
+	width: 5em;
+	height: 3em;
+	line-height: 1.5em;
+}
+.priceL {
+	text-align: right;
+}
+.priceR {
+	text-align: left;
+}
+.icon {
+	float: left;
+	width: 32px;
+	line-height: 3em;
+}
+.icon > img {
+	vertical-align: middle;
+	width: 32px;
+	height: 32px;
+}
+.product span {
+	color: gray;
+}
+.spacer {
+	clear: left;
+	height: 1.2em;
+}
