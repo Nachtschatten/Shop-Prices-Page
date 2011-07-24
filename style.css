@@ -13,14 +13,17 @@
 	margin-left: 2em;
 	width: 12em;
 }
+#example .priceL, #example .priceR {
+	width: 5em;
+}
 .product {
 	border: 0px solid #F5F5F5;
 	float: left;
-	margin: 1px;
+	margin: 1px 10px;
 }
 .priceL, .priceR {
 	float: left;
-	width: 5em;
+	width: 3em;
 	height: 3em;
 	line-height: 1.5em;
 }
@@ -34,6 +37,7 @@
 	float: left;
 	width: 32px;
 	line-height: 3em;
+	margin: 0 3px;
 }
 .icon > img {
 	vertical-align: middle;
