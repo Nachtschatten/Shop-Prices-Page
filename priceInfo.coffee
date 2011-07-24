@@ -12,4 +12,5 @@ $.getJSON 'price_json.php', (data) ->
 	for type, items of data
 		for item in items
 			$("##{type}").append generatePriceInfoDiv item
+	$(document).trigger 'itemsloaded'
 	null

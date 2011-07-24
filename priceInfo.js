@@ -19,6 +19,7 @@
         $("#" + type).append(generatePriceInfoDiv(item));
       }
     }
+    $(document).trigger('itemsloaded');
     return null;
   });
 }).call(this);

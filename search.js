@@ -18,8 +18,10 @@
     };
     return Item;
   })();
-  $('.product img').not('#example img').each(function() {
-    return cache.push(new Item($(this)));
+  $(document).bind('itemsloaded', function() {
+    return $('.product img').not('#example img').each(function() {
+      return cache.push(new Item($(this)));
+    });
   });
   form.submit(function(event) {
     return event.preventDefault();

@@ -22,9 +22,10 @@ class Item
 	test: (str) ->
 		@highlight str.length is 0 or @title.toLowerCase().indexOf(str.toLowerCase()) isnt -1
 
-# fill cache
-$('.product img').not('#example img').each ->
-	cache.push new Item($(this))
+# fill cache as soon as possible
+$(document).bind 'itemsloaded', ->
+	$('.product img').not('#example img').each ->
+		cache.push new Item($(this))
 
 form.submit (event) ->
 	event.preventDefault()
