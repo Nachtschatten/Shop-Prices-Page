@@ -20,23 +20,26 @@
   };
   getMaterialValue = function(name) {
     name = name.toLowerCase();
-    if (name.indexOf("wood") !== -1) {
+    if (name.indexOf("leather") !== -1) {
       return 1;
     }
+    if (name.indexOf("wood") !== -1) {
+      return 2;
+    }
     if (name.indexOf("stone") !== -1 && name.indexOf("redstone") === -1) {
-      return 2;
-    }
-    if (name.indexOf("rack") !== -1) {
-      return 2;
-    }
-    if (name.indexOf("iron") !== -1) {
       return 3;
     }
-    if (name.indexOf("diamond") !== -1) {
+    if (name.indexOf("rack") !== -1) {
+      return 3;
+    }
+    if (name.indexOf("iron") !== -1) {
       return 4;
     }
-    if (name.indexOf("gold") !== -1) {
+    if (name.indexOf("diamond") !== -1) {
       return 5;
+    }
+    if (name.indexOf("gold") !== -1) {
+      return 6;
     }
     return 0;
   };
