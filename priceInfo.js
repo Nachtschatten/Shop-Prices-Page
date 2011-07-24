@@ -45,7 +45,6 @@
     for (type in data) {
       items = data[type];
       items.sort(compare);
-      alert(type);
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
         $("#" + type).append(generatePriceInfoDiv(item));
