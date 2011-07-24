@@ -6,6 +6,9 @@
       return "<div class=" + c + ">" + p + "<br><span>" + p64 + "</span></div>";
     };
     priceLDiv = price('priceL', item.buy1, item.buy64);
+    if (item.name === "Yellow flower") {
+      item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png";
+    }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
     priceRDiv = price('priceR', item.sell1, item.sell64);
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
