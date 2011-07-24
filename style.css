@@ -1,5 +1,5 @@
 body {
-	min-width: 30em;
+	
 }
 #header {
 	text-align: center;
@@ -73,11 +73,5 @@ body {
 	
 	.product {
 		margin: 1px 0;
-	}
-}
-
-@media screen and (max-width: 300px) {
-	body {
-		min-width: 17em;
 	}
 }

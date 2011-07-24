@@ -8,6 +8,10 @@ generatePriceInfoDiv = (item) ->
 
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
 
+# unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
+setViewport = (wdt) ->
+	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
+
 $.getJSON 'price_json.php', (data) ->
 	wdt = 0
 	divs = $()
@@ -23,12 +27,31 @@ $.getJSON 'price_json.php', (data) ->
 	divs.width wdt
 	$(document).trigger 'itemsloaded'
 	
-	center = ->
+	sizes = ->
 		container = $('#blocks, #items')
 		itemwdt = $('.product', container).outerWidth(true)
 		cwdt = container.width()
-		row = Math.floor(cwdt/itemwdt)
-		container.css 'padding-left', (cwdt - row*itemwdt)/2
+		container: container
+		itemwdt: itemwdt
+		cwdt: cwdt
+		row: Math.floor(cwdt/itemwdt)
+	center = ->
+		s = sizes()
+		s.container.css 'padding-left', (s.cwdt - s.row*s.itemwdt)/2
 	center()
 	$(window).resize center
+	
+	# viewport for mobile browsers
+	winwdt = $(window).width()
+	if winwdt < 800
+		s = sizes()
+		if s.row < 3
+			min = 0
+			if winwdt < 300
+				min = 2*s.itemwdt
+			else
+				min = 3*s.itemwdt
+			$('body').css 'min-width', min
+			s.container.css 'padding-left', 0
+			setViewport min
 	null
