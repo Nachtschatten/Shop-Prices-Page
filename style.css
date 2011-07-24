@@ -1,6 +1,8 @@
+body {
+	min-width: 30em;
+}
 #header {
 	margin: auto;
-	width: 27em;
 }
 #searchfield {
 	line-height: 3em;
@@ -14,7 +16,7 @@
 	width: 12em;
 }
 #example .priceL, #example .priceR {
-	width: 5em;
+	width: auto;
 }
 .product {
 	border: 0px solid #F5F5F5;
