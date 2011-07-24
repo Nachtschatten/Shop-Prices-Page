@@ -11,10 +11,18 @@
       this.element = img.parent().parent();
     }
     Item.prototype.highlight = function(flag) {
-      return this.element.css('opacity', flag ? '1.0' : '0.1');
+      if (flag) {
+        return this.element.removeClass('nohighlight').addClass('highlight');
+      } else {
+        return this.element.removeClass('highlight').addClass('nohighlight');
+      }
     };
     Item.prototype.test = function(str) {
-      return this.highlight(str.length === 0 || this.title.toLowerCase().indexOf(str.toLowerCase()) !== -1);
+      if (str.length === 0) {
+        return this.element.removeClass('nohighlight').removeClass('highlight');
+      } else {
+        return this.highlight(this.title.toLowerCase().indexOf(str.toLowerCase()) !== -1);
+      }
     };
     return Item;
   })();

@@ -23,6 +23,9 @@ body {
 	float: left;
 	margin: 1px 10px;
 }
+.nohighlight {
+	opacity: 0.1;
+}
 .priceL, .priceR {
 	float: left;
 	width: 3em;
