@@ -17,10 +17,16 @@ class Item
 		@element = img.parent().parent()
 
 	highlight: (flag) ->
-		@element.css 'opacity', if flag then '1.0' else '0.1'
+		if flag
+			@element.removeClass('nohighlight').addClass('highlight')
+		else
+			@element.removeClass('highlight').addClass('nohighlight')
 
 	test: (str) ->
-		@highlight str.length is 0 or @title.toLowerCase().indexOf(str.toLowerCase()) isnt -1
+		if str.length is 0
+			@element.removeClass('nohighlight').removeClass('highlight')
+		else
+			@highlight @title.toLowerCase().indexOf(str.toLowerCase()) isnt -1
 
 # fill cache as soon as possible
 $(document).bind 'itemsloaded', ->

@@ -1,6 +1,13 @@
+body {
+	
+}
 #header {
-	margin: auto;
-	width: 27em;
+	text-align: center;
+}
+#header > * {
+	display: inline-block;
+	vertical-align: top;
+	float: none;
 }
 #searchfield {
 	line-height: 3em;
@@ -14,18 +21,21 @@
 	width: 12em;
 }
 #example .priceL, #example .priceR {
-	width: 5em;
+	width: auto;
 }
 .product {
 	border: 0px solid #F5F5F5;
 	float: left;
 	margin: 1px 10px;
 }
+.nohighlight {
+	opacity: 0.1;
+}
 .priceL, .priceR {
 	float: left;
-	width: 3em;
 	height: 3em;
 	line-height: 1.5em;
+	white-space: nowrap;
 }
 .priceL {
 	text-align: right;
@@ -50,4 +60,18 @@
 .spacer {
 	clear: left;
 	height: 1.2em;
+}
+
+@media screen and (max-width: 800px) {
+	.nohighlight {
+		display: none;
+	}
+	
+	body {
+		margin: 0
+	}
+	
+	.product {
+		margin: 1px 0;
+	}
 }
