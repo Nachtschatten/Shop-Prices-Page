@@ -2,7 +2,12 @@ body {
 	min-width: 30em;
 }
 #header {
-	margin: auto;
+	text-align: center;
+}
+#header > * {
+	display: inline-block;
+	vertical-align: top;
+	float: none;
 }
 #searchfield {
 	line-height: 3em;
