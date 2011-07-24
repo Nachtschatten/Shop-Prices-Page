@@ -11,14 +11,27 @@
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
   };
   $.getJSON('price_json.php', function(data) {
-    var item, items, type, _i, _len;
+    var div, divs, e, item, items, prices, type, wdt, _i, _j, _len, _len2;
+    wdt = 0;
+    divs = $();
     for (type in data) {
       items = data[type];
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
-        $("#" + type).append(generatePriceInfoDiv(item));
+        div = generatePriceInfoDiv(item);
+        prices = div.children('.priceL, .priceR');
+        divs = divs.add(prices);
+        $("#" + type).append(div);
+        for (_j = 0, _len2 = prices.length; _j < _len2; _j++) {
+          e = prices[_j];
+          e = $(e);
+          if (e.width() > wdt) {
+            wdt = e.width();
+          }
+        }
       }
     }
+    divs.width(wdt);
     $(document).trigger('itemsloaded');
     return null;
   });

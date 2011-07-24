@@ -9,8 +9,17 @@ generatePriceInfoDiv = (item) ->
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
 
 $.getJSON 'price_json.php', (data) ->
+	wdt = 0
+	divs = $()
 	for type, items of data
 		for item in items
-			$("##{type}").append generatePriceInfoDiv item
+			div = generatePriceInfoDiv item
+			prices = div.children '.priceL, .priceR'
+			divs = divs.add prices
+			$("##{type}").append div
+			for e in prices
+				e = $(e)
+				wdt = e.width() if e.width() > wdt
+	divs.width wdt
 	$(document).trigger 'itemsloaded'
 	null
