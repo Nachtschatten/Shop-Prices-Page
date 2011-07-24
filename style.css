@@ -56,3 +56,9 @@ body {
 	clear: left;
 	height: 1.2em;
 }
+
+@media screen and (max-width: 800px) {
+	.nohighlight {
+		display: none;
+	}
+}
