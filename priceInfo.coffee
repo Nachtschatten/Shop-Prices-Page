@@ -22,4 +22,13 @@ $.getJSON 'price_json.php', (data) ->
 				wdt = e.width() if e.width() > wdt
 	divs.width wdt
 	$(document).trigger 'itemsloaded'
+	
+	center = ->
+		container = $('#blocks, #items')
+		itemwdt = $('.product', container).outerWidth(true)
+		cwdt = container.width()
+		row = Math.floor(cwdt/itemwdt)
+		container.css 'padding-left', (cwdt - row*itemwdt)/2
+	center()
+	$(window).resize center
 	null

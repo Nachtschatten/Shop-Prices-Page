@@ -11,7 +11,7 @@
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
   };
   $.getJSON('price_json.php', function(data) {
-    var div, divs, e, item, items, prices, type, wdt, _i, _j, _len, _len2;
+    var center, div, divs, e, item, items, prices, type, wdt, _i, _j, _len, _len2;
     wdt = 0;
     divs = $();
     for (type in data) {
@@ -33,6 +33,16 @@
     }
     divs.width(wdt);
     $(document).trigger('itemsloaded');
+    center = function() {
+      var container, cwdt, itemwdt, row;
+      container = $('#blocks, #items');
+      itemwdt = $('.product', container).outerWidth(true);
+      cwdt = container.width();
+      row = Math.floor(cwdt / itemwdt);
+      return container.css('padding-left', (cwdt - row * itemwdt) / 2);
+    };
+    center();
+    $(window).resize(center);
     return null;
   });
 }).call(this);
