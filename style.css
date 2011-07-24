@@ -36,6 +36,7 @@ body {
 	width: 3em;
 	height: 3em;
 	line-height: 1.5em;
+	white-space: nowrap;
 }
 .priceL {
 	text-align: right;
@@ -65,5 +66,19 @@ body {
 @media screen and (max-width: 800px) {
 	.nohighlight {
 		display: none;
+	}
+	
+	body {
+		margin: 0
+	}
+	
+	.product {
+		margin: 1px 0;
+	}
+}
+
+@media screen and (max-width: 300px) {
+	body {
+		min-width: 17em;
 	}
 }
