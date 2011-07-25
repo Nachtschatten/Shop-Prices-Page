@@ -1,6 +1,8 @@
 (function() {
-  var Item, cache, form, input;
+  var Item, cache, clearButton, form, input;
+  clearButton = '<div class="icon16" id="clearButton">\n	<img src="Icons/cross-button-icon.png" alt="Clear" title="Sucheingabe l&ouml;schen">\n</div>';
   form = '<form id=search>\n	<input type=text>\n</form>';
+  $('#searchfield').append(clearButton);
   $('#searchfield').append(form);
   form = $('#search');
   input = $('input', form);

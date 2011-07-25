@@ -1,3 +1,9 @@
+clearButton = '''
+<div class="icon16" id="clearButton">
+	<img src="Icons/cross-button-icon.png" alt="Clear" title="Sucheingabe l&ouml;schen">
+</div>
+'''
+
 form = '''
 <form id=search>
 	<input type=text>
@@ -5,6 +11,7 @@ form = '''
 '''
 
 # insert form
+$('#searchfield').append clearButton
 $('#searchfield').append form
 
 form = $('#search')
