@@ -33,7 +33,9 @@ body {
 .faded, .nohighlight {
 	opacity: 0.1;
 }
-.notfaded { opacity: 1.0; }
+.notfaded {
+	cursor: pointer;
+}
 .priceL, .priceR {
 	float: left;
 	height: 3em;
@@ -71,9 +73,10 @@ body {
 .product span {
 	color: gray;
 }
-.spacer {
+hr.spacer {
 	clear: left;
 	height: 1.2em;
+	border: none;
 	border-bottom: 1px solid #D3D3DE;
 }
 
