@@ -34,6 +34,12 @@
   form.submit(function(event) {
     return event.preventDefault();
   });
+  input.keydown(function(event) {
+    if (event.keyCode === 27) {
+      input.val('');
+      return event.preventDefault();
+    }
+  });
   input.keyup(function() {
     var item, needle, _i, _len;
     needle = input.val();

@@ -36,6 +36,11 @@ $(document).bind 'itemsloaded', ->
 form.submit (event) ->
 	event.preventDefault()
 
+input.keydown (event) ->
+	if event.keyCode is 27
+		input.val('')
+		event.preventDefault()
+
 input.keyup ->
 	needle = input.val()
 	for item in cache
