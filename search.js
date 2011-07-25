@@ -1,8 +1,12 @@
 (function() {
-  var Item, cache, form, input;
+  var Item, cache, clearButton, clearSearch, form, input;
+  clearButton = '<div class="icon16" id="clearButton">\n	<img src="Icons/cross-button-icon.png" alt="Clear" title="Sucheingabe l&ouml;schen">\n</div>';
   form = '<form id=search>\n	<input type=text>\n</form>';
+  $('#searchfield').append(clearButton);
   $('#searchfield').append(form);
   form = $('#search');
+  clearButton = $('#clearButton');
+  clearButton.addClass('faded');
   input = $('input', form);
   cache = [];
   Item = (function() {
@@ -31,18 +35,29 @@
       return cache.push(new Item($(this)));
     });
   });
+  clearSearch = function() {
+    input.val('');
+    return clearButton.addClass('faded').removeClass('notfaded');
+  };
   form.submit(function(event) {
     return event.preventDefault();
   });
+  clearButton.click(function() {
+    clearSearch();
+    return input.keyup();
+  });
   input.keydown(function(event) {
     if (event.keyCode === 27) {
-      input.val('');
+      clearSearch();
       return event.preventDefault();
     }
   });
   input.keyup(function() {
     var item, needle, _i, _len;
     needle = input.val();
+    if (needle !== '') {
+      clearButton.removeClass('faded').addClass('notfaded');
+    }
     for (_i = 0, _len = cache.length; _i < _len; _i++) {
       item = cache[_i];
       item.test(needle);

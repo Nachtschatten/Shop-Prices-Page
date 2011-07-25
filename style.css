@@ -11,14 +11,16 @@ body {
 }
 #searchfield {
 	line-height: 3em;
+	margin-left: 1.1em;
 }
 #searchfield input {
-	background-image: url(Icons/search.png);
+	background-image: url(Icons/magnifier-icon.png);
 	background-repeat: no-repeat;
-	padding-left: 17px;
+	background-position: center left;
+	padding-left: 18px;
 	border: 1px solid #CCCCCC;
-	margin-left: 2em;
 	width: 12em;
+	margin-left: 0.3em;
 }
 #example .priceL, #example .priceR {
 	width: auto;
@@ -28,9 +30,10 @@ body {
 	float: left;
 	margin: 1px 10px;
 }
-.nohighlight {
+.faded, .nohighlight {
 	opacity: 0.1;
 }
+.notfaded { opacity: 1.0; }
 .priceL, .priceR {
 	float: left;
 	height: 3em;
@@ -43,14 +46,25 @@ body {
 .priceR {
 	text-align: left;
 }
+.icon, .icon16 {
+    float: left;
+    line-height: 3em;
+}
+.icon16 {
+    width:16px;
+}
 .icon {
-	float: left;
 	width: 32px;
-	line-height: 3em;
 	margin: 0 3px;
 }
-.icon > img {
+.icon16 > img, .icon > img {
 	vertical-align: middle;
+}
+.icon16 > img {
+    width: 16px;
+    height: 16px;
+}
+.icon > img {
 	width: 32px;
 	height: 32px;
 }
