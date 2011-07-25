@@ -29,20 +29,23 @@
     if (name.indexOf("wood") !== -1) {
       return 2;
     }
+    if (name.indexOf("sand") !== -1) {
+      return 3;
+    }
     if (name.indexOf("stone") !== -1 && name.indexOf("redstone") === -1) {
-      return 3;
-    }
-    if (name.indexOf("rack") !== -1) {
-      return 3;
-    }
-    if (name.indexOf("iron") !== -1) {
       return 4;
     }
-    if (name.indexOf("diamond") !== -1) {
+    if (name.indexOf("rack") !== -1) {
+      return 4;
+    }
+    if (name.indexOf("iron") !== -1) {
       return 5;
     }
-    if (name.indexOf("gold") !== -1) {
+    if (name.indexOf("diamond") !== -1) {
       return 6;
+    }
+    if (name.indexOf("gold") !== -1) {
+      return 7;
     }
     return 0;
   };

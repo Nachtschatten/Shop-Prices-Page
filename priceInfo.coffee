@@ -22,16 +22,18 @@ getMaterialValue = (name) ->
 		return 1
 	if name.indexOf("wood") isnt -1
 		return 2
+	if name.indexOf("sand") isnt -1
+		return 3
 	if name.indexOf("stone") isnt -1 and name.indexOf("redstone") is -1
-		return 3
-	if name.indexOf("rack") isnt -1
-		return 3
-	if name.indexOf("iron") isnt -1
 		return 4
-	if name.indexOf("diamond") isnt -1
+	if name.indexOf("rack") isnt -1
+		return 4
+	if name.indexOf("iron") isnt -1
 		return 5
-	if name.indexOf("gold") isnt -1
+	if name.indexOf("diamond") isnt -1
 		return 6
+	if name.indexOf("gold") isnt -1
+		return 7
 	return 0
 
 # unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
