@@ -60,6 +60,7 @@ body {
 .spacer {
 	clear: left;
 	height: 1.2em;
+	border-bottom: 1px solid #D3D3DE;
 }
 
 @media screen and (max-width: 800px) {
