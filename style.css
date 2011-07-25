@@ -30,9 +30,10 @@ body {
 	float: left;
 	margin: 1px 10px;
 }
-.nohighlight {
+.faded, .nohighlight {
 	opacity: 0.1;
 }
+.notfaded { opacity: 1.0; }
 .priceL, .priceR {
 	float: left;
 	height: 3em;
