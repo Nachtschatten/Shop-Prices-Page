@@ -1,5 +1,5 @@
 (function() {
-  var compare, generatePriceInfoDiv, getMaterialValue, setViewport;
+  var compare, generatePriceInfoDiv, getMaterialValue, nameContainsOneOf, setViewport;
   generatePriceInfoDiv = function(item) {
     var iconDiv, price, priceLDiv, priceRDiv;
     price = function(c, p, p64) {
@@ -23,31 +23,64 @@
   };
   getMaterialValue = function(name) {
     name = name.toLowerCase();
-    if (name.indexOf("leather") !== -1) {
+    if (name.indexOf("sapling") !== -1) {
       return 1;
     }
-    if (name.indexOf("wood") !== -1) {
+    if (nameContainsOneOf(name, ["leaves", "birch tree", "redwood tree"])) {
       return 2;
     }
-    if (name.indexOf("sand") !== -1) {
+    if (nameContainsOneOf(name, ["workbench", "furnace", "chest", "dispenser"]) && name.indexOf("plate") === -1) {
       return 3;
     }
-    if (name.indexOf("stone") !== -1 && name.indexOf("redstone") === -1) {
+    if (nameContainsOneOf(name, ["jukebox", "note block"])) {
       return 4;
     }
-    if (name.indexOf("rack") !== -1) {
-      return 4;
-    }
-    if (name.indexOf("iron") !== -1) {
+    if (name.indexOf("rail") !== -1) {
       return 5;
     }
-    if (name.indexOf("diamond") !== -1) {
+    if (name.indexOf("bucket") !== -1) {
       return 6;
     }
-    if (name.indexOf("gold") !== -1) {
+    if (name.indexOf("music disc") !== -1) {
       return 7;
     }
+    if (name.indexOf("minecart") !== -1) {
+      return 8;
+    }
+    if (name.indexOf("leather") !== -1) {
+      return 15;
+    }
+    if (name.indexOf("wood") !== -1 || name === "birch") {
+      return 20;
+    }
+    if (name.indexOf("sand") !== -1) {
+      return 25;
+    }
+    if (name.indexOf("stone") !== -1 && name.indexOf("redstone") === -1) {
+      return 30;
+    }
+    if (name.indexOf("rack") !== -1) {
+      return 30;
+    }
+    if (name.indexOf("iron") !== -1) {
+      return 35;
+    }
+    if (name.indexOf("diamond") !== -1) {
+      return 40;
+    }
+    if (name.indexOf("gold") !== -1) {
+      return 45;
+    }
     return 0;
+  };
+  nameContainsOneOf = function(name, listOfWords) {
+    var wordIndex;
+    for (wordIndex in listOfWords) {
+      if (name.indexOf(listOfWords[wordIndex]) !== -1) {
+        return true;
+      }
+    }
+    return false;
   };
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);

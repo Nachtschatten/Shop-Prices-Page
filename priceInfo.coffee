@@ -18,23 +18,45 @@ compare = (items, item1, item2) ->
 
 getMaterialValue = (name) ->
 	name = name.toLowerCase()
-	if name.indexOf("leather") isnt -1
+	if name.indexOf("sapling") isnt -1
 		return 1
-	if name.indexOf("wood") isnt -1
+	if nameContainsOneOf(name, ["leaves", "birch tree", "redwood tree"])
 		return 2
-	if name.indexOf("sand") isnt -1
+	if nameContainsOneOf(name, ["workbench", "furnace", "chest", "dispenser"]) and name.indexOf("plate") is -1
 		return 3
-	if name.indexOf("stone") isnt -1 and name.indexOf("redstone") is -1
+	if nameContainsOneOf(name, ["jukebox", "note block"])
 		return 4
-	if name.indexOf("rack") isnt -1
-		return 4
-	if name.indexOf("iron") isnt -1
+	if name.indexOf("rail") isnt -1
 		return 5
-	if name.indexOf("diamond") isnt -1
+	if name.indexOf("bucket") isnt -1
 		return 6
-	if name.indexOf("gold") isnt -1
+	if name.indexOf("music disc") isnt -1
 		return 7
+	if name.indexOf("minecart") isnt -1
+		return 8
+	if name.indexOf("leather") isnt -1
+		return 15
+	if name.indexOf("wood") isnt -1 or name is "birch"
+		return 20
+	if name.indexOf("sand") isnt -1
+		return 25
+	if name.indexOf("stone") isnt -1 and name.indexOf("redstone") is -1
+		return 30
+	if name.indexOf("rack") isnt -1
+		return 30
+	if name.indexOf("iron") isnt -1
+		return 35
+	if name.indexOf("diamond") isnt -1
+		return 40
+	if name.indexOf("gold") isnt -1
+		return 45
 	return 0
+
+nameContainsOneOf = (name, listOfWords) ->
+	for wordIndex of listOfWords
+		if name.indexOf(listOfWords[wordIndex]) isnt -1
+			return true
+	return false
 
 # unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
 setViewport = (wdt) ->
