@@ -13,11 +13,11 @@
     priceRDiv = price('priceR', item.sell1, item.sell64);
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
   };
-  compare = function(item1, item2) {
+  compare = function(items, item1, item2) {
     var matDifference;
     matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name);
     if (matDifference === 0) {
-      return item1.id - item2.id;
+      return items.indexOf(item1) - items.indexOf(item2);
     }
     return matDifference;
   };
@@ -58,7 +58,9 @@
     divs = $();
     for (type in data) {
       items = data[type];
-      items.sort(compare);
+      items.sort(function(x, y) {
+        return compare(items, x, y);
+      });
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
         div = generatePriceInfoDiv(item);

@@ -10,10 +10,10 @@ generatePriceInfoDiv = (item) ->
 
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
 
-compare = (item1, item2) ->
+compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
 	if matDifference is 0
-		return item1.id - item2.id
+		return items.indexOf(item1) - items.indexOf(item2)
 	return matDifference
 
 getMaterialValue = (name) ->
@@ -44,7 +44,7 @@ $.getJSON 'price_json.php', (data) ->
 	wdt = 0
 	divs = $()
 	for type, items of data
-		items.sort(compare)
+		items.sort((x, y) -> compare(items, x, y))
 		for item in items
 			div = generatePriceInfoDiv item
 			prices = div.children '.priceL, .priceR'
