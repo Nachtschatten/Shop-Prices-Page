@@ -44,7 +44,13 @@ $(document).bind 'itemsloaded', ->
 
 clearSearch = ->
 	input.val('')
+	fadeButton()
+
+fadeButton = ->
 	clearButton.addClass('faded').removeClass('notfaded')
+
+unfadeButton = ->
+	clearButton.addClass('notfaded').removeClass('faded')
 
 form.submit (event) ->
 	event.preventDefault()
@@ -60,8 +66,10 @@ input.keydown (event) ->
 
 input.keyup ->
 	needle = input.val()
-	if needle isnt ''
-		clearButton.removeClass('faded').addClass('notfaded')
+	if needle is ''
+		fadeButton()
+	else
+		unfadeButton()
 	for item in cache
 		item.test needle
 	null

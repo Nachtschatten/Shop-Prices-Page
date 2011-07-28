@@ -1,5 +1,5 @@
 (function() {
-  var Item, cache, clearButton, clearSearch, form, input;
+  var Item, cache, clearButton, clearSearch, fadeButton, form, input, unfadeButton;
   clearButton = '<div class="icon16" id="clearButton">\n	<img src="Icons/cross-button-icon.png" alt="Clear" title="Sucheingabe l&ouml;schen">\n</div>';
   form = '<form id=search>\n	<input type=text>\n</form>';
   $('#searchfield').append(clearButton);
@@ -37,7 +37,13 @@
   });
   clearSearch = function() {
     input.val('');
+    return fadeButton();
+  };
+  fadeButton = function() {
     return clearButton.addClass('faded').removeClass('notfaded');
+  };
+  unfadeButton = function() {
+    return clearButton.addClass('notfaded').removeClass('faded');
   };
   form.submit(function(event) {
     return event.preventDefault();
@@ -55,8 +61,10 @@
   input.keyup(function() {
     var item, needle, _i, _len;
     needle = input.val();
-    if (needle !== '') {
-      clearButton.removeClass('faded').addClass('notfaded');
+    if (needle === '') {
+      fadeButton();
+    } else {
+      unfadeButton();
     }
     for (_i = 0, _len = cache.length; _i < _len; _i++) {
       item = cache[_i];
