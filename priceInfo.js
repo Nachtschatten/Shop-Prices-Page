@@ -8,6 +8,8 @@
     priceLDiv = price('priceL', item.buy1, item.buy64);
     if (item.name === "Yellow flower") {
       item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png";
+    } else {
+      item.picurl = item.picurl.replace('www.kitania.de', 'tools.michaelzinn.de');
     }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
     priceRDiv = price('priceR', item.sell1, item.sell64);
