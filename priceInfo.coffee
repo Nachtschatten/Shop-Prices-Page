@@ -18,45 +18,28 @@ compare = (items, item1, item2) ->
 
 getMaterialValue = (name) ->
 	name = name.toLowerCase()
-	if name.indexOf("sapling") isnt -1
-		return 1
-	if nameContainsOneOf(name, ["leaves", "birch tree", "redwood tree"])
-		return 2
-	if nameContainsOneOf(name, ["workbench", "furnace", "chest", "dispenser"]) and name.indexOf("plate") is -1
-		return 3
-	if nameContainsOneOf(name, ["jukebox", "note block"])
-		return 4
-	if name.indexOf("rail") isnt -1
-		return 5
-	if name.indexOf("bucket") isnt -1
-		return 6
-	if name.indexOf("music disc") isnt -1
-		return 7
-	if name.indexOf("minecart") isnt -1
-		return 8
-	if name.indexOf("leather") isnt -1
-		return 15
-	if name.indexOf("wood") isnt -1 or name is "birch"
-		return 20
-	if name.indexOf("sand") isnt -1
-		return 25
-	if name.indexOf("stone") isnt -1 and name.indexOf("redstone") is -1
-		return 30
-	if name.indexOf("rack") isnt -1
-		return 30
-	if name.indexOf("iron") isnt -1
-		return 35
-	if name.indexOf("diamond") isnt -1
-		return 40
-	if name.indexOf("gold") isnt -1
-		return 45
-	return 0
-
-nameContainsOneOf = (name, listOfWords) ->
-	for wordIndex of listOfWords
-		if name.indexOf(listOfWords[wordIndex]) isnt -1
-			return true
-	return false
+	nameContains = ->
+		for word in arguments
+			return true if name.indexOf(word) isnt -1
+		false
+	
+	return  1 if nameContains 'sapling'
+	return  2 if nameContains 'leaves', 'birch tree', 'redwood tree'
+	return  3 if nameContains 'workbench', 'furnace', 'chest', 'dispenser' and not nameContains 'plate'
+	return  4 if nameContains 'jukebox', 'note block'
+	return  5 if nameContains 'rail'
+	return  6 if nameContains 'bucket'
+	return  7 if nameContains 'music disc'
+	return  8 if nameContains 'minecart'
+	return 15 if nameContains 'leather'
+	return 20 if nameContains 'wood' or name is 'birch'
+	return 25 if nameContains 'sand'
+	return 30 if nameContains 'stone' and not nameContains 'redstone'
+	return 30 if nameContains 'rack'
+	return 35 if nameContains 'iron'
+	return 40 if nameContains 'diamond'
+	return 45 if nameContains 'gold'
+	return  0
 
 # unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
 setViewport = (wdt) ->
@@ -66,7 +49,7 @@ $.getJSON 'price_json.php', (data) ->
 	wdt = 0
 	divs = $()
 	for type, items of data
-		items.sort((x, y) -> compare(items, x, y))
+		items.sort (x, y) -> compare items, x, y
 		for item in items
 			div = generatePriceInfoDiv item
 			prices = div.children '.priceL, .priceR'

@@ -1,5 +1,5 @@
 (function() {
-  var compare, generatePriceInfoDiv, getMaterialValue, nameContainsOneOf, setViewport;
+  var compare, generatePriceInfoDiv, getMaterialValue, setViewport;
   generatePriceInfoDiv = function(item) {
     var iconDiv, price, priceLDiv, priceRDiv;
     price = function(c, p, p64) {
@@ -22,65 +22,67 @@
     return matDifference;
   };
   getMaterialValue = function(name) {
+    var nameContains;
     name = name.toLowerCase();
-    if (name.indexOf("sapling") !== -1) {
+    nameContains = function() {
+      var word, _i, _len;
+      for (_i = 0, _len = arguments.length; _i < _len; _i++) {
+        word = arguments[_i];
+        if (name.indexOf(word) !== -1) {
+          return true;
+        }
+      }
+      return false;
+    };
+    if (nameContains('sapling')) {
       return 1;
     }
-    if (nameContainsOneOf(name, ["leaves", "birch tree", "redwood tree"])) {
+    if (nameContains('leaves', 'birch tree', 'redwood tree')) {
       return 2;
     }
-    if (nameContainsOneOf(name, ["workbench", "furnace", "chest", "dispenser"]) && name.indexOf("plate") === -1) {
+    if (nameContains('workbench', 'furnace', 'chest', 'dispenser' && !nameContains('plate'))) {
       return 3;
     }
-    if (nameContainsOneOf(name, ["jukebox", "note block"])) {
+    if (nameContains('jukebox', 'note block')) {
       return 4;
     }
-    if (name.indexOf("rail") !== -1) {
+    if (nameContains('rail')) {
       return 5;
     }
-    if (name.indexOf("bucket") !== -1) {
+    if (nameContains('bucket')) {
       return 6;
     }
-    if (name.indexOf("music disc") !== -1) {
+    if (nameContains('music disc')) {
       return 7;
     }
-    if (name.indexOf("minecart") !== -1) {
+    if (nameContains('minecart')) {
       return 8;
     }
-    if (name.indexOf("leather") !== -1) {
+    if (nameContains('leather')) {
       return 15;
     }
-    if (name.indexOf("wood") !== -1 || name === "birch") {
+    if (nameContains('wood' || name === 'birch')) {
       return 20;
     }
-    if (name.indexOf("sand") !== -1) {
+    if (nameContains('sand')) {
       return 25;
     }
-    if (name.indexOf("stone") !== -1 && name.indexOf("redstone") === -1) {
+    if (nameContains('stone' && !nameContains('redstone'))) {
       return 30;
     }
-    if (name.indexOf("rack") !== -1) {
+    if (nameContains('rack')) {
       return 30;
     }
-    if (name.indexOf("iron") !== -1) {
+    if (nameContains('iron')) {
       return 35;
     }
-    if (name.indexOf("diamond") !== -1) {
+    if (nameContains('diamond')) {
       return 40;
     }
-    if (name.indexOf("gold") !== -1) {
+    if (nameContains('gold')) {
       return 45;
     }
     return 0;
-  };
-  nameContainsOneOf = function(name, listOfWords) {
-    var wordIndex;
-    for (wordIndex in listOfWords) {
-      if (name.indexOf(listOfWords[wordIndex]) !== -1) {
-        return true;
-      }
-    }
-    return false;
   };
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
