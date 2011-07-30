@@ -25,6 +25,10 @@ body {
 #example .priceL, #example .priceR {
 	width: auto;
 }
+
+.container {
+	position: relative;
+}
 .product {
 	border: 0px solid #F5F5F5;
 	float: left;
@@ -73,6 +77,19 @@ body {
 .product span {
 	color: gray;
 }
+
+.infobox {
+	position: absolute;
+	background-color: rgba(180, 180, 180, 0.8);
+	border-radius: 5px;
+	padding: 1em;
+}
+.infobox h1 {
+	font-family: sans-serif;
+	font-size: 100%;
+	margin: 0;
+}
+
 hr.spacer {
 	clear: left;
 	height: 1.2em;

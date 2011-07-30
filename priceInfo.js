@@ -1,7 +1,7 @@
 (function() {
   var compare, generatePriceInfoDiv, getMaterialValue, setViewport;
   generatePriceInfoDiv = function(item) {
-    var iconDiv, price, priceLDiv, priceRDiv;
+    var hideInfoBox, iconDiv, price, priceLDiv, priceRDiv, showInfoBox;
     price = function(c, p, p64) {
       return "<div class=" + c + ">" + p + "<br><span>" + p64 + "</span></div>";
     };
@@ -13,7 +13,24 @@
     }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
     priceRDiv = price('priceR', item.sell1, item.sell64);
-    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
+    showInfoBox = function() {
+      var box, pos, product;
+      product = $(this);
+      box = product.data('infobox');
+      if (!box) {
+        box = $("<div class=infobox>\n	<h1>" + item.name + "</h1>\n</div>");
+        box.hide().appendTo(product.offsetParent());
+        product.data('infobox', box);
+      }
+      pos = product.position();
+      box.css('left', pos.left + (product.width() - box.width()) / 2);
+      box.css('top', pos.top + product.height());
+      return box.fadeIn('fast');
+    };
+    hideInfoBox = function() {
+      return $(this).data('infobox').fadeOut('fast');
+    };
+    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').hover(showInfoBox, hideInfoBox);
   };
   compare = function(items, item1, item2) {
     var matDifference;

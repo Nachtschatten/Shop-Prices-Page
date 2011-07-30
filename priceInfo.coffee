@@ -10,8 +10,25 @@ generatePriceInfoDiv = (item) ->
 		item.picurl = item.picurl.replace 'www.kitania.de', 'tools.michaelzinn.de'
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', item.sell1, item.sell64
-
-	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
+	
+	showInfoBox = ->
+		product = $(this)
+		box = product.data 'infobox'
+		unless box
+			box = $ """
+<div class=infobox>
+	<h1>#{item.name}</h1>
+</div>"""
+			box.hide().appendTo product.offsetParent()
+			product.data 'infobox', box
+		pos = product.position()
+		box.css 'left', pos.left + (product.width() - box.width())/2
+		box.css 'top', pos.top + product.height()
+		box.fadeIn 'fast'
+	hideInfoBox = ->
+		$(this).data('infobox').fadeOut 'fast'
+	
+	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').hover(showInfoBox, hideInfoBox)
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
