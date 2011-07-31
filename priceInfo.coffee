@@ -45,7 +45,8 @@ getMaterialValue = (name) ->
 setViewport = (wdt) ->
 	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
 
-$.getJSON 'price_json.php', (data) ->
+# JSONP request
+$.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', (data) ->
 	wdt = 0
 	divs = $()
 	for type, items of data

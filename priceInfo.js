@@ -87,7 +87,7 @@
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
-  $.getJSON('price_json.php', function(data) {
+  $.getJSON('http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', function(data) {
     var center, div, divs, e, item, items, min, prices, s, sizes, type, wdt, winwdt, _i, _j, _len, _len2;
     wdt = 0;
     divs = $();
