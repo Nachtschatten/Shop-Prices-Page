@@ -1,0 +1,99 @@
+body {
+	
+}
+#header {
+	text-align: center;
+}
+#header > * {
+	display: inline-block;
+	vertical-align: top;
+	float: none;
+}
+#searchfield {
+	line-height: 3em;
+	margin-left: 1.1em;
+}
+#searchfield > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+#searchfield input {
+	background-image: url(Icons/magnifier-icon.png);
+	background-repeat: no-repeat;
+	background-position: center left;
+	padding-left: 18px;
+	border: 1px solid #CCCCCC;
+	width: 12em;
+	margin-left: 0.3em;
+}
+#example .priceL, #example .priceR {
+	width: auto;
+}
+.product {
+	border: 0px solid #F5F5F5;
+	float: left;
+	margin: 1px 10px;
+}
+.faded, .nohighlight {
+	opacity: 0.1;
+}
+.notfaded {
+	cursor: pointer;
+}
+.priceL, .priceR {
+	float: left;
+	height: 3em;
+	line-height: 1.5em;
+	white-space: nowrap;
+}
+.priceL {
+	text-align: right;
+}
+.priceR {
+	text-align: left;
+}
+.icon {
+    float: left;
+    line-height: 3em;
+}
+.icon16 {
+    width:16px;
+}
+.icon {
+	width: 32px;
+	margin: 0 3px;
+}
+.icon16 > img, .icon > img {
+	vertical-align: middle;
+}
+.icon16 > img {
+    width: 16px;
+    height: 16px;
+}
+.icon > img {
+	width: 32px;
+	height: 32px;
+}
+.product span {
+	color: gray;
+}
+hr.spacer {
+	clear: left;
+	height: 1.2em;
+	border: none;
+	border-bottom: 1px solid #D3D3DE;
+}
+
+@media screen and (max-width: 800px) {
+	.nohighlight {
+		display: none;
+	}
+	
+	body {
+		margin: 0
+	}
+	
+	.product {
+		margin: 1px 0;
+	}
+}
