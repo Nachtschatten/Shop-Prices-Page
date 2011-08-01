@@ -53,7 +53,10 @@
     }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
     priceRDiv = price('priceR', 1, 64);
-    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
+    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', {
+      amount: a,
+      tax: t
+    });
   };
   compare = function(items, item1, item2) {
     var matDifference;
@@ -155,6 +158,23 @@
     }
     divs.width(wdt);
     $(document).trigger('itemsloaded');
+    $('#amountspinner').change(function() {
+      var amount;
+      amount = $(this).val();
+      if (isNaN(amount) || amount < 2) {
+        return;
+      }
+      $('.amount2').text(amount);
+      return $('.product').not('#example').each(function() {
+        var pdata;
+        e = $(this);
+        pdata = e.data('pdata');
+        $('.priceL span', e).text(priceFormat(getPrice(-amount, pdata.amount, pdata.tax)));
+        return $('.priceR span', e).text(priceFormat(getPrice(+amount, pdata.amount, pdata.tax)));
+      });
+    }).parent().submit(function(event) {
+      return event.preventDefault();
+    });
     sizes = function() {
       var container, cwdt, itemwdt;
       container = $('#blocks, #items');

@@ -39,7 +39,7 @@ generatePriceInfoDiv = (item) ->
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
 
-	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
+	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', amount: a, tax: t);
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
@@ -93,6 +93,18 @@ $.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', 
 	divs.width wdt
 	$(document).trigger 'itemsloaded'
 	
+	# spinner for second price
+	$('#amountspinner').change ->
+		amount = $(this).val()
+		return if isNaN(amount) or amount < 2
+		$('.amount2').text amount
+		$('.product').not('#example').each ->
+			e = $(this)
+			pdata = e.data 'pdata'
+			$('.priceL span', e).text priceFormat getPrice -amount, pdata.amount, pdata.tax
+			$('.priceR span', e).text priceFormat getPrice +amount, pdata.amount, pdata.tax
+	.parent().submit (event) ->
+		event.preventDefault()
 	sizes = ->
 		container = $('#blocks, #items')
 		itemwdt = $('.product', container).outerWidth(true)
