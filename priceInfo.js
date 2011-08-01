@@ -82,7 +82,7 @@
     if (nameContains('leaves', 'birch tree', 'redwood tree')) {
       return 2;
     }
-    if (nameContains('workbench', 'furnace', 'chest', 'dispenser' && !nameContains('plate'))) {
+    if (nameContains('workbench', 'furnace', 'chest', 'dispenser') && !nameContains('plate')) {
       return 3;
     }
     if (nameContains('jukebox', 'note block')) {
@@ -103,13 +103,13 @@
     if (nameContains('leather')) {
       return 15;
     }
-    if (nameContains('wood' || name === 'birch')) {
+    if (nameContains('wood') || name === 'birch') {
       return 20;
     }
     if (nameContains('sand')) {
       return 25;
     }
-    if (nameContains('stone' && !nameContains('redstone'))) {
+    if (nameContains('stone') && !nameContains('redstone')) {
       return 30;
     }
     if (nameContains('rack')) {
