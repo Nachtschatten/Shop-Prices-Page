@@ -1,12 +1,43 @@
 
+getPrice = (change, amount, tax) ->
+	a = 0.0373495858135303
+	b = 0.731944262776933
+	# f(x) = log(x + a/x^b)
+	f = (x) -> Math.log(x + a/Math.pow(x, b))
+	
+	return 0 if change is 0
+	if change > 0 # sell
+		price = f(amount+change+0.5) - f(amount+0.5)
+	else # buy
+		price = f(amount+0.5) - f(amount+change+0.5)
+		price *= 1 + tax/100
+	price *= 10000
+	Math.round price
+
+priceFormat = (p) ->
+	return '' if isNaN p
+	p = ''+p
+	return p if p.length <= 3
+	result = ''
+	pos = p.length
+	for i in [pos-3..-(pos%3)-1] by -3
+		b = i
+		b = 0 if b < 0
+		result = p[b...pos] + ' ' + result
+		pos = b
+	result.slice 0, -1
+
 generatePriceInfoDiv = (item) ->
-	price = (c, p, p64) ->
-		"<div class=#{c}>#{p}<br><span>#{p64}</span></div>"
-	priceLDiv = price 'priceL', item.buy1, item.buy64
+	a = item.amount
+	# tax isn't currently included
+	t = item.tax or 16
+	price = (c, ch1, ch2) ->
+		"<div class=#{c}>#{priceFormat getPrice ch1, a, t}<br><span>#{priceFormat getPrice ch2, a, t}</span></div>"
+	priceLDiv = price 'priceL', -1, -64
 	if item.name is "Yellow flower"
 		item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png"
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
-	priceRDiv = price 'priceR', item.sell1, item.sell64
+	priceRDiv = price 'priceR', 1, 64
 
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>');
 
