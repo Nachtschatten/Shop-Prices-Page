@@ -9,6 +9,9 @@ body {
 	vertical-align: top;
 	float: none;
 }
+#header > form {
+	line-height: 3em;
+}
 #searchfield {
 	line-height: 3em;
 	margin-left: 1.1em;
