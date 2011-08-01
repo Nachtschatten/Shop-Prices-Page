@@ -36,6 +36,7 @@ generatePriceInfoDiv = (item) ->
 	priceLDiv = price 'priceL', -1, -64
 	if item.name is "Yellow flower"
 		item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png"
+	item.picurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png' unless item.picurl
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
 
