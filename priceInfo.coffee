@@ -41,12 +41,14 @@ generatePriceInfoDiv = (item) ->
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
 	
+	# horizontally centers the box according to its content relative to the product
 	positionBox = (product) ->
 		box = product.data 'infobox'
 		pos = product.position()
 		box.css 'left', pos.left + (product.width() - box.width())/2
 		box.css 'top', pos.top + product.height()
 		box.fadeIn 'fast'
+	# shows the box. Called as event handler on mouseover
 	showInfoBox = ->
 		product = $(this)
 		box = product.data 'infobox'
@@ -67,45 +69,67 @@ generatePriceInfoDiv = (item) ->
 			$('form input', box).change changeAmount
 			product.data 'infobox', box
 		positionBox product
+	# hides the box. Called as event handler on mouseout
 	hideInfoBox = ->
 		product = $(this)
 		product.data('infobox').fadeOut 'fast' unless product.data 'pinned'
+	# pin the box when the user clicks the product
 	pinInfoBox = ->
+		# only one box can be pinned simultaneously
 		if pinnedBox
 			if pinnedBox isnt this
+				# close the currently opened box
 				box = pinnedBox
 				pinInfoBox.apply box
 				hideInfoBox.apply box
 				pinnedBox = this
 			else
+				# the last box will be unpinned
 				pinnedBox = null
 		else
+			# there's no other box opened right now
 			pinnedBox = this
 		product = $(this)
+		# invert pinned-state
 		pinned = not product.data 'pinned'
 		product.data('pinned', pinned)
 		infobox = product.data 'infobox'
+		# show more information while the box is pinned, hide a placeholder
 		$('.toggle', infobox).toggle()
+		# there's more content, so the position needs to be adjusted
 		positionBox product
+	# the user changed something in the form. Called as event handler by the radio buttons and the number box
 	changeAmount = ->
 		form = $(this).closest 'form'
 		product = form.parent().data('product')
 		ninput = $('input[type=number]', form)
 		amount = ninput.val()
+		# hide the results when the user sets 0
 		unless +amount
+			# add the "click me"-hint
 			form.siblings('.siminfo').addClass 'toggle'
+			# hide result
 			form.siblings('.price').hide()
+			# reset highlight
 			product.css 'background-color', 'transparent'
+			# we don't need to calculate anything then
 			return
+		# hide the "click me"-hint
 		form.siblings('.siminfo').removeClass 'toggle'
+		# either + for sell or - for buy
 		mode = $('input:radio:checked', form).val()
+		# contains amount and tax needed for price calculations
 		pdata = product.data('pdata')
 		# enough in stock?
 		if mode is '-' and pdata.amount < amount
+			# set to the highest possible value
 			amount = pdata.amount
 			ninput.val amount
+		# calculate price by combining the sign with the amount (both strings) and casting to a number
 		price = getPrice +(mode+amount), pdata.amount, pdata.tax
+		# output below the form
 		form.siblings('.price').show().text priceFormat price
+		# highlight the product
 		product.css 'background-color', 'yellow'
 	
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>')
