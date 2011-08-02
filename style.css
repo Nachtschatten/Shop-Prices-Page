@@ -33,6 +33,29 @@ body {
 	width: auto;
 }
 
+#shoppinglist {
+	width: 80%;
+	margin: 0 auto;
+}
+#shoppinglist h1 {
+	font-family: sans-serif;
+	font-size: 120%;
+}
+#shoppinglist caption {
+	text-align: left;
+	font-family: sans-serif;
+	font-size: 110%;
+}
+#shoppinglist .subtotal {
+	border-top: 1px solid black;
+	padding-left: 1em;
+}
+#shoppinglist .total {
+	border-top: 3px solid black;
+	font-weight: bold;
+	padding-left: 1em;
+}
+
 .container {
 	position: relative;
 }

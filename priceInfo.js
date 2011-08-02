@@ -157,7 +157,7 @@
       var result, table;
       table = $('#shoppinglist .' + klass);
       result = 0;
-      table.find('tr').each(function() {
+      table.find('tr').not(':first').each(function() {
         return result += $(this).data('price');
       });
       table.next().text(priceFormat(result));

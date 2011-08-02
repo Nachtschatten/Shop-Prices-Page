@@ -160,7 +160,7 @@ calcShoppingList = ->
 		table = $('#shoppinglist .' + klass)
 		result = 0
 		# each table row saves the price
-		table.find('tr').each ->
+		table.find('tr').not(':first').each ->
 			result += $(this).data 'price'
 		# set subtotal visually
 		table.next().text(priceFormat result)
