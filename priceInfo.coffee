@@ -118,8 +118,8 @@ generatePriceInfoDiv = (item) ->
 			form.siblings('.price').hide()
 			# reset highlight
 			product.css 'background-color', 'transparent'
-			# remove from shopping list
-			product.data('listitem').remove()
+			# remove from shopping list (if existent)
+			product.data('listitem')?.remove()
 			calcShoppingList()
 			# we don't need to calculate anything then
 			return

@@ -112,7 +112,7 @@
       return positionBox(product);
     };
     changeAmount = function() {
-      var amount, form, formatted, klass, listitem, mode, ninput, pdata, product, tr;
+      var amount, form, formatted, klass, listitem, mode, ninput, pdata, product, tr, _ref;
       form = $(this).closest('form');
       product = form.parent().data('product');
       ninput = $('input[type=number]', form);
@@ -121,7 +121,9 @@
         form.siblings('.siminfo').addClass('toggle');
         form.siblings('.price').hide();
         product.css('background-color', 'transparent');
-        product.data('listitem').remove();
+        if ((_ref = product.data('listitem')) != null) {
+          _ref.remove();
+        }
         calcShoppingList();
         return;
       }
