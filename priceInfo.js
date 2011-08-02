@@ -1,5 +1,5 @@
 (function() {
-  var compare, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
+  var calcShoppingList, compare, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
   getPrice = function(change, amount, tax) {
     var a, b, f, price;
     a = 0.0373495858135303;
@@ -106,7 +106,7 @@
       return positionBox(product);
     };
     changeAmount = function() {
-      var amount, form, mode, ninput, pdata, product;
+      var amount, form, formatted, klass, listitem, mode, ninput, pdata, product, tr;
       form = $(this).closest('form');
       product = form.parent().data('product');
       ninput = $('input[type=number]', form);
@@ -115,6 +115,8 @@
         form.siblings('.siminfo').addClass('toggle');
         form.siblings('.price').hide();
         product.css('background-color', 'transparent');
+        product.data('listitem').remove();
+        calcShoppingList();
         return;
       }
       form.siblings('.siminfo').removeClass('toggle');
@@ -125,13 +127,38 @@
         ninput.val(amount);
       }
       price = getPrice(+(mode + amount), pdata.amount, pdata.tax);
-      form.siblings('.price').show().text(priceFormat(price));
-      return product.css('background-color', 'yellow');
+      formatted = priceFormat(price);
+      form.siblings('.price').show().text(formatted);
+      product.css('background-color', 'yellow');
+      klass = mode === '-' ? 'buy' : 'sell';
+      tr = $("<tr><td>" + amount + "</td><td>" + ($('img', product).attr('title')) + "</td><td>" + formatted + "</td></tr>").data('price', price);
+      $('#shoppinglist .' + klass).append(tr);
+      listitem = product.data('listitem');
+      if (listitem) {
+        listitem.remove();
+      }
+      product.data('listitem', tr);
+      return calcShoppingList();
     };
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', {
       amount: a,
       tax: t
     }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
+  };
+  calcShoppingList = function() {
+    var calcSubtotal, total;
+    calcSubtotal = function(klass) {
+      var result, table;
+      table = $('#shoppinglist .' + klass);
+      result = 0;
+      table.find('tr').each(function() {
+        return result += $(this).data('price');
+      });
+      table.next().text(priceFormat(result));
+      return result;
+    };
+    total = calcSubtotal('sell') - calcSubtotal('buy');
+    return $('#shoppinglist .total').text(priceFormat(total));
   };
   compare = function(items, item1, item2) {
     var matDifference;

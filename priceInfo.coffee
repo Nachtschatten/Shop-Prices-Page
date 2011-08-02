@@ -112,6 +112,9 @@ generatePriceInfoDiv = (item) ->
 			form.siblings('.price').hide()
 			# reset highlight
 			product.css 'background-color', 'transparent'
+			# remove from shopping list
+			product.data('listitem').remove()
+			calcShoppingList()
 			# we don't need to calculate anything then
 			return
 		# hide the "click me"-hint
@@ -128,14 +131,36 @@ generatePriceInfoDiv = (item) ->
 		# calculate price by combining the sign with the amount (both strings) and casting to a number
 		price = getPrice +(mode+amount), pdata.amount, pdata.tax
 		# output below the form
-		form.siblings('.price').show().text priceFormat price
+		formatted = priceFormat price
+		form.siblings('.price').show().text formatted
 		# highlight the product
 		product.css 'background-color', 'yellow'
+		# add to the shopping list
+		klass = if mode is '-' then 'buy' else 'sell'
+		tr = $("<tr><td>#{amount}</td><td>#{$('img', product).attr 'title'}</td><td>#{formatted}</td></tr>").data('price', price)
+		$('#shoppinglist .' + klass).append tr
+		listitem = product.data 'listitem'
+		listitem.remove() if listitem
+		product.data 'listitem', tr
+		calcShoppingList()
 	
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>')
 		.data('pdata', amount: a, tax: t)
 		.hover(showInfoBox, hideInfoBox)
 		.click(pinInfoBox)
+
+calcShoppingList = ->
+	calcSubtotal = (klass) ->
+		table = $('#shoppinglist .' + klass)
+		result = 0
+		# each table row saves the price
+		table.find('tr').each ->
+			result += $(this).data 'price'
+		# set subtotal visually
+		table.next().text(priceFormat result)
+		result
+	total = calcSubtotal('sell') - calcSubtotal('buy')
+	$('#shoppinglist .total').text priceFormat total
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
