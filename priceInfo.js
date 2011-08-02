@@ -79,6 +79,9 @@
         box = $("<div class=infobox>\n	<h1>" + item.name + "</h1>\n	<div class='siminfo toggle'>Click to simulate</div>\n	<form class='sim toggle'>\n		<label><input type=radio name=bs value='-' checked>Kaufen</label>\n		<label><input type=radio name=bs value='+'>Verkaufen</label>\n		<br>\n		<input type=number value=0 min=0 max=1000>\n	</form>\n	<div class=price></div>\n</div>");
         box.hide().data('product', product).appendTo(product.offsetParent());
         $('form input', box).change(changeAmount);
+        $('form', box).submit(function(event) {
+          return event.preventDefault();
+        });
         product.data('infobox', box);
       }
       return positionBox(product);

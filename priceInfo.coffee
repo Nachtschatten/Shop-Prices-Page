@@ -73,6 +73,8 @@ generatePriceInfoDiv = (item) ->
 </div>"""
 			box.hide().data('product', product).appendTo product.offsetParent()
 			$('form input', box).change changeAmount
+			$('form', box).submit (event) ->
+				event.preventDefault()
 			product.data 'infobox', box
 		positionBox product
 	# hides the box. Called as event handler on mouseout
