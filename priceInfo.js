@@ -20,13 +20,19 @@
     return Math.round(price);
   };
   priceFormat = function(p) {
-    var b, i, pos, result, _ref, _ref2, _step;
+    var b, i, pos, result, sign, _ref, _ref2, _step;
     if (isNaN(p)) {
       return '';
     }
     p = '' + p;
     if (p.length <= 3) {
       return p;
+    }
+    if (p[0] === '-') {
+      sign = '-';
+      p = p.slice(1);
+    } else {
+      sign = '';
     }
     result = '';
     pos = p.length;
@@ -38,7 +44,7 @@
       result = p.slice(b, pos) + ' ' + result;
       pos = b;
     }
-    return result.slice(0, -1);
+    return sign + result.slice(0, -1);
   };
   pinnedBox = null;
   generatePriceInfoDiv = function(item) {

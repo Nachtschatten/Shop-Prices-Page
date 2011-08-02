@@ -18,6 +18,12 @@ priceFormat = (p) ->
 	return '' if isNaN p
 	p = ''+p
 	return p if p.length <= 3
+	# negative numbers
+	if p[0] is '-'
+		sign = '-'
+		p = p.slice 1
+	else
+		sign = ''
 	result = ''
 	pos = p.length
 	for i in [pos-3..-(pos%3)-1] by -3
@@ -25,7 +31,7 @@ priceFormat = (p) ->
 		b = 0 if b < 0
 		result = p[b...pos] + ' ' + result
 		pos = b
-	result.slice 0, -1
+	sign + result.slice 0, -1
 
 pinnedBox = null
 generatePriceInfoDiv = (item) ->
