@@ -120,6 +120,12 @@
       product = form.parent().data('product');
       ninput = $('input[type=number]', form);
       amount = ninput.val();
+      mode = $('input:radio:checked', form).val();
+      pdata = product.data('pdata');
+      if (mode === '-' && pdata.amount < amount) {
+        amount = pdata.amount;
+        ninput.val(amount);
+      }
       if (!+amount) {
         form.siblings('.siminfo').addClass('toggle');
         form.siblings('.price').hide();
@@ -131,12 +137,6 @@
         return;
       }
       form.siblings('.siminfo').removeClass('toggle');
-      mode = $('input:radio:checked', form).val();
-      pdata = product.data('pdata');
-      if (mode === '-' && pdata.amount < amount) {
-        amount = pdata.amount;
-        ninput.val(amount);
-      }
       price = getPrice(+(mode + amount), pdata.amount, pdata.tax);
       formatted = priceFormat(price);
       form.siblings('.price').show().text(formatted);

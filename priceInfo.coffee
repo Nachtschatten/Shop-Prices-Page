@@ -112,6 +112,15 @@ generatePriceInfoDiv = (item) ->
 		product = form.parent().data('product')
 		ninput = $('input[type=number]', form)
 		amount = ninput.val()
+		# either + for sell or - for buy
+		mode = $('input:radio:checked', form).val()
+		# contains amount and tax needed for price calculations
+		pdata = product.data('pdata')
+		# enough in stock?
+		if mode is '-' and pdata.amount < amount
+			# set to the highest possible value
+			amount = pdata.amount
+			ninput.val amount
 		# hide the results when the user sets 0
 		unless +amount
 			# add the "click me"-hint
@@ -127,15 +136,6 @@ generatePriceInfoDiv = (item) ->
 			return
 		# hide the "click me"-hint
 		form.siblings('.siminfo').removeClass 'toggle'
-		# either + for sell or - for buy
-		mode = $('input:radio:checked', form).val()
-		# contains amount and tax needed for price calculations
-		pdata = product.data('pdata')
-		# enough in stock?
-		if mode is '-' and pdata.amount < amount
-			# set to the highest possible value
-			amount = pdata.amount
-			ninput.val amount
 		# calculate price by combining the sign with the amount (both strings) and casting to a number
 		price = getPrice +(mode+amount), pdata.amount, pdata.tax
 		# output below the form
