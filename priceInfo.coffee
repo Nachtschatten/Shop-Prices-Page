@@ -27,6 +27,7 @@ priceFormat = (p) ->
 		pos = b
 	result.slice 0, -1
 
+pinnedBox = null
 generatePriceInfoDiv = (item) ->
 	a = item.amount
 	# tax isn't currently included
@@ -40,6 +41,12 @@ generatePriceInfoDiv = (item) ->
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
 	
+	positionBox = (product) ->
+		box = product.data 'infobox'
+		pos = product.position()
+		box.css 'left', pos.left + (product.width() - box.width())/2
+		box.css 'top', pos.top + product.height()
+		box.fadeIn 'fast'
 	showInfoBox = ->
 		product = $(this)
 		box = product.data 'infobox'
@@ -47,17 +54,64 @@ generatePriceInfoDiv = (item) ->
 			box = $ """
 <div class=infobox>
 	<h1>#{item.name}</h1>
+	<div class='siminfo toggle'>Click to simulate</div>
+	<form class='sim toggle'>
+		<label><input type=radio name=bs value='-' checked>Kaufen</label>
+		<label><input type=radio name=bs value='+'>Verkaufen</label>
+		<br>
+		<input type=number value=0 min=0 max=1000>
+	</form>
+	<div class=price></div>
 </div>"""
-			box.hide().appendTo product.offsetParent()
+			box.hide().data('product', product).appendTo product.offsetParent()
+			$('form input', box).change changeAmount
 			product.data 'infobox', box
-		pos = product.position()
-		box.css 'left', pos.left + (product.width() - box.width())/2
-		box.css 'top', pos.top + product.height()
-		box.fadeIn 'fast'
+		positionBox product
 	hideInfoBox = ->
-		$(this).data('infobox').fadeOut 'fast'
+		product = $(this)
+		product.data('infobox').fadeOut 'fast' unless product.data 'pinned'
+	pinInfoBox = ->
+		if pinnedBox
+			if pinnedBox isnt this
+				box = pinnedBox
+				pinInfoBox.apply box
+				hideInfoBox.apply box
+				pinnedBox = this
+			else
+				pinnedBox = null
+		else
+			pinnedBox = this
+		product = $(this)
+		pinned = not product.data 'pinned'
+		product.data('pinned', pinned)
+		infobox = product.data 'infobox'
+		$('.toggle', infobox).toggle()
+		positionBox product
+	changeAmount = ->
+		form = $(this).closest 'form'
+		product = form.parent().data('product')
+		ninput = $('input[type=number]', form)
+		amount = ninput.val()
+		unless +amount
+			form.siblings('.siminfo').addClass 'toggle'
+			form.siblings('.price').hide()
+			product.css 'background-color', 'transparent'
+			return
+		form.siblings('.siminfo').removeClass 'toggle'
+		mode = $('input:radio:checked', form).val()
+		pdata = product.data('pdata')
+		# enough in stock?
+		if mode is '-' and pdata.amount < amount
+			amount = pdata.amount
+			ninput.val amount
+		price = getPrice +(mode+amount), pdata.amount, pdata.tax
+		form.siblings('.price').show().text priceFormat price
+		product.css 'background-color', 'yellow'
 	
-	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', amount: a, tax: t).hover(showInfoBox, hideInfoBox)
+	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>')
+		.data('pdata', amount: a, tax: t)
+		.hover(showInfoBox, hideInfoBox)
+		.click(pinInfoBox)
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)

@@ -96,6 +96,15 @@ body {
 	font-size: 100%;
 	margin: 0;
 }
+.infobox .sim {
+	display: none;
+}
+.infobox .price {
+	display: none;
+	font-weight: bold;
+	text-align: right;
+	border-top: 3px solid black;
+}
 
 hr.spacer {
 	clear: left;

@@ -1,5 +1,5 @@
 (function() {
-  var compare, generatePriceInfoDiv, getMaterialValue, getPrice, priceFormat, setViewport;
+  var compare, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
   getPrice = function(change, amount, tax) {
     var a, b, f, price;
     a = 0.0373495858135303;
@@ -40,8 +40,9 @@
     }
     return result.slice(0, -1);
   };
+  pinnedBox = null;
   generatePriceInfoDiv = function(item) {
-    var a, hideInfoBox, iconDiv, price, priceLDiv, priceRDiv, showInfoBox, t;
+    var a, changeAmount, hideInfoBox, iconDiv, pinInfoBox, positionBox, price, priceLDiv, priceRDiv, showInfoBox, t;
     a = item.amount;
     t = item.tax || 16;
     price = function(c, ch1, ch2) {
@@ -56,27 +57,81 @@
     }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
     priceRDiv = price('priceR', 1, 64);
-    showInfoBox = function() {
-      var box, pos, product;
-      product = $(this);
+    positionBox = function(product) {
+      var box, pos;
       box = product.data('infobox');
-      if (!box) {
-        box = $("<div class=infobox>\n	<h1>" + item.name + "</h1>\n</div>");
-        box.hide().appendTo(product.offsetParent());
-        product.data('infobox', box);
-      }
       pos = product.position();
       box.css('left', pos.left + (product.width() - box.width()) / 2);
       box.css('top', pos.top + product.height());
       return box.fadeIn('fast');
     };
+    showInfoBox = function() {
+      var box, product;
+      product = $(this);
+      box = product.data('infobox');
+      if (!box) {
+        box = $("<div class=infobox>\n	<h1>" + item.name + "</h1>\n	<div class='siminfo toggle'>Click to simulate</div>\n	<form class='sim toggle'>\n		<label><input type=radio name=bs value='-' checked>Kaufen</label>\n		<label><input type=radio name=bs value='+'>Verkaufen</label>\n		<br>\n		<input type=number value=0 min=0 max=1000>\n	</form>\n	<div class=price></div>\n</div>");
+        box.hide().data('product', product).appendTo(product.offsetParent());
+        $('form input', box).change(changeAmount);
+        product.data('infobox', box);
+      }
+      return positionBox(product);
+    };
     hideInfoBox = function() {
-      return $(this).data('infobox').fadeOut('fast');
+      var product;
+      product = $(this);
+      if (!product.data('pinned')) {
+        return product.data('infobox').fadeOut('fast');
+      }
+    };
+    pinInfoBox = function() {
+      var box, infobox, pinned, product;
+      if (pinnedBox) {
+        if (pinnedBox !== this) {
+          box = pinnedBox;
+          pinInfoBox.apply(box);
+          hideInfoBox.apply(box);
+          pinnedBox = this;
+        } else {
+          pinnedBox = null;
+        }
+      } else {
+        pinnedBox = this;
+      }
+      product = $(this);
+      pinned = !product.data('pinned');
+      product.data('pinned', pinned);
+      infobox = product.data('infobox');
+      $('.toggle', infobox).toggle();
+      return positionBox(product);
+    };
+    changeAmount = function() {
+      var amount, form, mode, ninput, pdata, product;
+      form = $(this).closest('form');
+      product = form.parent().data('product');
+      ninput = $('input[type=number]', form);
+      amount = ninput.val();
+      if (!+amount) {
+        form.siblings('.siminfo').addClass('toggle');
+        form.siblings('.price').hide();
+        product.css('background-color', 'transparent');
+        return;
+      }
+      form.siblings('.siminfo').removeClass('toggle');
+      mode = $('input:radio:checked', form).val();
+      pdata = product.data('pdata');
+      if (mode === '-' && pdata.amount < amount) {
+        amount = pdata.amount;
+        ninput.val(amount);
+      }
+      price = getPrice(+(mode + amount), pdata.amount, pdata.tax);
+      form.siblings('.price').show().text(priceFormat(price));
+      return product.css('background-color', 'yellow');
     };
     return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', {
       amount: a,
       tax: t
-    }).hover(showInfoBox, hideInfoBox);
+    }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
   };
   compare = function(items, item1, item2) {
     var matDifference;
