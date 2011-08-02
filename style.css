@@ -9,9 +9,16 @@ body {
 	vertical-align: top;
 	float: none;
 }
+#header > form {
+	line-height: 3em;
+}
 #searchfield {
 	line-height: 3em;
 	margin-left: 1.1em;
+}
+#searchfield > * {
+	display: inline-block;
+	vertical-align: middle;
 }
 #searchfield input {
 	background-image: url(Icons/magnifier-icon.png);
@@ -52,7 +59,7 @@ body {
 .priceR {
 	text-align: left;
 }
-.icon, .icon16 {
+.icon {
     float: left;
     line-height: 3em;
 }

@@ -1,18 +1,61 @@
 (function() {
-  var compare, generatePriceInfoDiv, getMaterialValue, setViewport;
-  generatePriceInfoDiv = function(item) {
-    var hideInfoBox, iconDiv, price, priceLDiv, priceRDiv, showInfoBox;
-    price = function(c, p, p64) {
-      return "<div class=" + c + ">" + p + "<br><span>" + p64 + "</span></div>";
+  var compare, generatePriceInfoDiv, getMaterialValue, getPrice, priceFormat, setViewport;
+  getPrice = function(change, amount, tax) {
+    var a, b, f, price;
+    a = 0.0373495858135303;
+    b = 0.731944262776933;
+    f = function(x) {
+      return Math.log(x + a / Math.pow(x, b));
     };
-    priceLDiv = price('priceL', item.buy1, item.buy64);
+    if (change === 0) {
+      return 0;
+    }
+    if (change > 0) {
+      price = f(amount + change + 0.5) - f(amount + 0.5);
+    } else {
+      price = f(amount + 0.5) - f(amount + change + 0.5);
+      price *= 1 + tax / 100;
+    }
+    price *= 10000;
+    return Math.round(price);
+  };
+  priceFormat = function(p) {
+    var b, i, pos, result, _ref, _ref2, _step;
+    if (isNaN(p)) {
+      return '';
+    }
+    p = '' + p;
+    if (p.length <= 3) {
+      return p;
+    }
+    result = '';
+    pos = p.length;
+    for (i = _ref = pos - 3, _ref2 = -(pos % 3) - 1, _step = -3; _ref <= _ref2 ? i <= _ref2 : i >= _ref2; i += _step) {
+      b = i;
+      if (b < 0) {
+        b = 0;
+      }
+      result = p.slice(b, pos) + ' ' + result;
+      pos = b;
+    }
+    return result.slice(0, -1);
+  };
+  generatePriceInfoDiv = function(item) {
+    var a, hideInfoBox, iconDiv, price, priceLDiv, priceRDiv, showInfoBox, t;
+    a = item.amount;
+    t = item.tax || 16;
+    price = function(c, ch1, ch2) {
+      return "<div class=" + c + ">" + (priceFormat(getPrice(ch1, a, t))) + "<br><span>" + (priceFormat(getPrice(ch2, a, t))) + "</span></div>";
+    };
+    priceLDiv = price('priceL', -1, -64);
     if (item.name === "Yellow flower") {
       item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png";
-    } else {
-      item.picurl = item.picurl.replace('www.kitania.de', 'tools.michaelzinn.de');
+    }
+    if (!item.picurl) {
+      item.picurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png';
     }
     iconDiv = "<div class=icon><img src='" + item.picurl + "' alt='" + item.name + "' title='" + item.name + "'></div>";
-    priceRDiv = price('priceR', item.sell1, item.sell64);
+    priceRDiv = price('priceR', 1, 64);
     showInfoBox = function() {
       var box, pos, product;
       product = $(this);
@@ -30,7 +73,10 @@
     hideInfoBox = function() {
       return $(this).data('infobox').fadeOut('fast');
     };
-    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').hover(showInfoBox, hideInfoBox);
+    return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>').data('pdata', {
+      amount: a,
+      tax: t
+    }).hover(showInfoBox, hideInfoBox);
   };
   compare = function(items, item1, item2) {
     var matDifference;
@@ -59,7 +105,7 @@
     if (nameContains('leaves', 'birch tree', 'redwood tree')) {
       return 2;
     }
-    if (nameContains('workbench', 'furnace', 'chest', 'dispenser' && !nameContains('plate'))) {
+    if (nameContains('workbench', 'furnace', 'chest', 'dispenser') && !nameContains('plate')) {
       return 3;
     }
     if (nameContains('jukebox', 'note block')) {
@@ -80,13 +126,13 @@
     if (nameContains('leather')) {
       return 15;
     }
-    if (nameContains('wood' || name === 'birch')) {
+    if (nameContains('wood') || name === 'birch') {
       return 20;
     }
     if (nameContains('sand')) {
       return 25;
     }
-    if (nameContains('stone' && !nameContains('redstone'))) {
+    if (nameContains('stone') && !nameContains('redstone')) {
       return 30;
     }
     if (nameContains('rack')) {
@@ -106,7 +152,7 @@
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
-  $.getJSON('price_json.php', function(data) {
+  $.getJSON('http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', function(data) {
     var center, div, divs, e, item, items, min, prices, s, sizes, type, wdt, winwdt, _i, _j, _len, _len2;
     wdt = 0;
     divs = $();
@@ -132,6 +178,23 @@
     }
     divs.width(wdt);
     $(document).trigger('itemsloaded');
+    $('#amountspinner').change(function() {
+      var amount;
+      amount = $(this).val();
+      if (isNaN(amount) || amount < 2) {
+        return;
+      }
+      $('.amount2').text(amount);
+      return $('.product').not('#example').each(function() {
+        var pdata;
+        e = $(this);
+        pdata = e.data('pdata');
+        $('.priceL span', e).text(priceFormat(getPrice(-amount, pdata.amount, pdata.tax)));
+        return $('.priceR span', e).text(priceFormat(getPrice(+amount, pdata.amount, pdata.tax)));
+      });
+    }).parent().submit(function(event) {
+      return event.preventDefault();
+    });
     sizes = function() {
       var container, cwdt, itemwdt;
       container = $('#blocks, #items');
