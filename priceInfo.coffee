@@ -167,8 +167,14 @@ calcShoppingList = ->
 		# set subtotal visually
 		table.next().text(priceFormat result)
 		result
-	total = calcSubtotal('sell') - calcSubtotal('buy')
-	$('#shoppinglist .total').text priceFormat total
+	sell = calcSubtotal('sell')
+	buy = calcSubtotal('buy')
+	if sell is 0 and buy is 0
+		$('#shoppinglist .list').hide()
+	else
+		total = sell - buy
+		$('#shoppinglist .total').text priceFormat total
+		$('#shoppinglist .list').show()
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)

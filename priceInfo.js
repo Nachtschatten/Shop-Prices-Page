@@ -157,7 +157,7 @@
     }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
   };
   calcShoppingList = function() {
-    var calcSubtotal, total;
+    var buy, calcSubtotal, sell, total;
     calcSubtotal = function(klass) {
       var result, table;
       table = $('#shoppinglist .' + klass);
@@ -168,8 +168,15 @@
       table.next().text(priceFormat(result));
       return result;
     };
-    total = calcSubtotal('sell') - calcSubtotal('buy');
-    return $('#shoppinglist .total').text(priceFormat(total));
+    sell = calcSubtotal('sell');
+    buy = calcSubtotal('buy');
+    if (sell === 0 && buy === 0) {
+      return $('#shoppinglist .list').hide();
+    } else {
+      total = sell - buy;
+      $('#shoppinglist .total').text(priceFormat(total));
+      return $('#shoppinglist .list').show();
+    }
   };
   compare = function(items, item1, item2) {
     var matDifference;
