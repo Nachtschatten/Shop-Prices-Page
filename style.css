@@ -32,6 +32,62 @@ body {
 #example .priceL, #example .priceR {
 	width: auto;
 }
+
+#shoppinglist {
+	width: 80%;
+	margin: 0 auto;
+}
+#shoppinglist h1 {
+	font-family: sans-serif;
+	font-size: 120%;
+}
+#shoppinglist .list {
+	display: none;
+}
+#shoppinglist .tables {
+	column-count: 2;
+	/* Mozilla supports columns, but not manual breaking */
+	-webkit-column-count: 2;
+}
+#shoppinglist caption {
+	text-align: left;
+	font-family: sans-serif;
+	font-size: 110%;
+}
+#shoppinglist table {
+	text-align: center;
+	border-collapse: collapse;
+}
+#shoppinglist tr {
+	/* Opera even breaks tables */
+	break-after: avoid;
+}
+#shoppinglist th {
+	min-width: 3em;
+}
+#shoppinglist tr+tr td {
+	border-top: 1px solid grey;
+}
+#shoppinglist .subtotal {
+	border-top: 1px solid black;
+	padding-left: 1em;
+	break-before: avoid;
+	break-after: always;
+	/* those are currently ignored by all browsers */
+	column-break-before: avoid;
+	column-break-after: always;
+	-webkit-column-break-before: avoid;
+	-webkit-column-break-after: always;
+}
+#shoppinglist .total {
+	border-top: 3px solid black;
+	font-weight: bold;
+	padding-left: 1em;
+}
+
+.container {
+	position: relative;
+}
 .product {
 	border: 0px solid #F5F5F5;
 	float: left;
@@ -80,6 +136,28 @@ body {
 .product span {
 	color: gray;
 }
+
+.infobox {
+	position: absolute;
+	background-color: rgba(180, 180, 180, 0.8);
+	border-radius: 5px;
+	padding: 1em;
+}
+.infobox h1 {
+	font-family: sans-serif;
+	font-size: 100%;
+	margin: 0;
+}
+.infobox .sim {
+	display: none;
+}
+.infobox .price {
+	display: none;
+	font-weight: bold;
+	text-align: right;
+	border-top: 3px solid black;
+}
+
 hr.spacer {
 	clear: left;
 	height: 1.2em;
