@@ -82,14 +82,14 @@ generatePriceInfoDiv = (item) ->
 		product = $(this)
 		product.data('infobox').fadeOut 'fast' unless product.data 'pinned'
 	# pin the box when the user clicks the product
-	pinInfoBox = ->
+	pinInfoBox = (event, hide) ->
 		# only one box can be pinned simultaneously
 		if pinnedBox
+			box = pinnedBox
 			if pinnedBox isnt this
 				# close the currently opened box
-				box = pinnedBox
 				pinInfoBox.apply box
-				hideInfoBox.apply box
+				hide = true
 				pinnedBox = this
 			else
 				# the last box will be unpinned
@@ -106,6 +106,8 @@ generatePriceInfoDiv = (item) ->
 		$('.toggle', infobox).toggle()
 		# there's more content, so the position needs to be adjusted
 		positionBox product
+		# hide the box if asked by caller
+		hideInfoBox.apply box if hide
 	# the user changed something in the form. Called as event handler by the radio buttons and the number box
 	changeAmount = ->
 		form = $(this).closest 'form'
@@ -156,6 +158,11 @@ generatePriceInfoDiv = (item) ->
 		.data('pdata', amount: a, tax: t)
 		.hover(showInfoBox, hideInfoBox)
 		.click(pinInfoBox)
+
+# click anywhere to hide the box
+$(document).click ->
+	$(pinnedBox).trigger 'click', true if pinnedBox
+$('.relative').click (e) -> e.stopPropagation()
 
 calcShoppingList = ->
 	calcSubtotal = (klass) ->

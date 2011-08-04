@@ -93,13 +93,13 @@
         return product.data('infobox').fadeOut('fast');
       }
     };
-    pinInfoBox = function() {
+    pinInfoBox = function(event, hide) {
       var box, infobox, pinned, product;
       if (pinnedBox) {
+        box = pinnedBox;
         if (pinnedBox !== this) {
-          box = pinnedBox;
           pinInfoBox.apply(box);
-          hideInfoBox.apply(box);
+          hide = true;
           pinnedBox = this;
         } else {
           pinnedBox = null;
@@ -112,7 +112,10 @@
       product.data('pinned', pinned);
       infobox = product.data('infobox');
       $('.toggle', infobox).toggle();
-      return positionBox(product);
+      positionBox(product);
+      if (hide) {
+        return hideInfoBox.apply(box);
+      }
     };
     changeAmount = function() {
       var amount, form, formatted, klass, listitem, mode, ninput, pdata, product, tr, _ref;
@@ -156,6 +159,14 @@
       tax: t
     }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
   };
+  $(document).click(function() {
+    if (pinnedBox) {
+      return $(pinnedBox).trigger('click', true);
+    }
+  });
+  $('.relative').click(function(e) {
+    return e.stopPropagation();
+  });
   calcShoppingList = function() {
     var account, buy, calcSubtotal, sell, sub, total;
     calcSubtotal = function(klass) {
