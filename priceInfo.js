@@ -146,7 +146,7 @@
       product.css('background-color', 'yellow');
       klass = mode === '-' ? 'buy' : 'sell';
       tr = $("<tr><td>" + amount + "</td><td>" + ($('img', product).attr('title')) + "</td><td>" + formatted + "</td></tr>").data('price', price);
-      $('#shoppinglist .' + klass).append(tr);
+      $('#shoppinglist .items .' + klass).append(tr);
       listitem = product.data('listitem');
       if (listitem) {
         listitem.remove();
@@ -171,12 +171,12 @@
     var account, buy, calcSubtotal, sell, sub, total;
     calcSubtotal = function(klass) {
       var result, table;
-      table = $('#shoppinglist .' + klass);
+      table = $('#shoppinglist .items .' + klass);
       result = 0;
       table.find('tr').not(':first').each(function() {
         return result += $(this).data('price');
       });
-      table.next().text(priceFormat(result));
+      $('#shoppinglist .subtotal .' + klass).text(priceFormat(result));
       return result;
     };
     sell = calcSubtotal('sell');

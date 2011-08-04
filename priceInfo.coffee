@@ -148,7 +148,7 @@ generatePriceInfoDiv = (item) ->
 		# add to the shopping list
 		klass = if mode is '-' then 'buy' else 'sell'
 		tr = $("<tr><td>#{amount}</td><td>#{$('img', product).attr 'title'}</td><td>#{formatted}</td></tr>").data('price', price)
-		$('#shoppinglist .' + klass).append tr
+		$('#shoppinglist .items .' + klass).append tr
 		listitem = product.data 'listitem'
 		listitem.remove() if listitem
 		product.data 'listitem', tr
@@ -166,13 +166,13 @@ $('.relative').click (e) -> e.stopPropagation()
 
 calcShoppingList = ->
 	calcSubtotal = (klass) ->
-		table = $('#shoppinglist .' + klass)
+		table = $('#shoppinglist .items .' + klass)
 		result = 0
 		# each table row saves the price
 		table.find('tr').not(':first').each ->
 			result += $(this).data 'price'
 		# set subtotal visually
-		table.next().text(priceFormat result)
+		$('#shoppinglist .subtotal .' + klass).text(priceFormat result)
 		result
 	sell = calcSubtotal('sell')
 	buy = calcSubtotal('buy')

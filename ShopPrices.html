@@ -38,18 +38,26 @@
 			<h1>Einkaufsliste</h1>
 			<p>Items anklicken, um sie hinzuzufügen</p>
 			<div class=list>
-				<div class=tables>
-					<table class=buy>
-						<caption>Kauf</caption>
-						<tr><th>Menge</th><th>Name</th><th>Preis</th></tr>
-					</table>
-					<div class=subtotal>0</div>
-					<table class=sell>
-						<caption>Verkauf</caption>
-						<tr><th>Menge</th><th>Name</th><th>Preis</th></tr>
-					</table>
-					<div class=subtotal>0</div>
-				</div>
+				<table>
+					<tr class=items>
+						<td>
+							<table class=buy>
+								<caption>Kauf</caption>
+								<tr><th>Menge</th><th>Name</th><th>Preis</th></tr>
+							</table>
+						</td>
+						<td>
+							<table class=sell>
+								<caption>Verkauf</caption>
+								<tr><th>Menge</th><th>Name</th><th>Preis</th></tr>
+							</table>
+						</td>
+					</tr>
+					<tr class=subtotal>
+						<td class=buy>0</td>
+						<td class=sell>0</td>
+					</tr>
+				</table>
 				<div class=subtotal>0</div>
 				<p class=account>Guthaben: <input type=number value=0 min=0></p>
 				<div class=total>0</div>
