@@ -61,7 +61,7 @@ generatePriceInfoDiv = (item) ->
 		unless box
 			box = $ """
 <div class=infobox>
-	<h1>#{item.name}</h1>
+	<h1>#{item.name} (#{item.amount})</h1>
 	<div class='siminfo toggle'>Click to simulate</div>
 	<form class='sim toggle'>
 		<label><input type=radio name=bs value='-' checked>Kaufen</label>
