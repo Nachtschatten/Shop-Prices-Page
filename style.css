@@ -1,5 +1,5 @@
 body {
-	
+	font-family: sans-serif;
 }
 #header {
 	text-align: center;
@@ -38,7 +38,6 @@ body {
 	margin: 0 auto;
 }
 #shoppinglist h1 {
-	font-family: sans-serif;
 	font-size: 120%;
 }
 #shoppinglist .list {
@@ -51,7 +50,6 @@ body {
 }
 #shoppinglist caption {
 	text-align: left;
-	font-family: sans-serif;
 	font-size: 110%;
 }
 #shoppinglist table {
@@ -141,7 +139,6 @@ body {
 	padding: 1em;
 }
 .infobox h1 {
-	font-family: sans-serif;
 	font-size: 100%;
 	margin: 0;
 }
