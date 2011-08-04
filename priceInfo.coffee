@@ -188,7 +188,7 @@ $('#shoppinglist .account input').change calcShoppingList
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
 	if matDifference is 0
-		return items.indexOf(item1) - items.indexOf(item2)
+		return item1.id - item2.id
 	return matDifference
 
 getMaterialValue = (name) ->

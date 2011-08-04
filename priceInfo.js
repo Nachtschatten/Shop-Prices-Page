@@ -191,7 +191,7 @@
     var matDifference;
     matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name);
     if (matDifference === 0) {
-      return items.indexOf(item1) - items.indexOf(item2);
+      return item1.id - item2.id;
     }
     return matDifference;
   };
