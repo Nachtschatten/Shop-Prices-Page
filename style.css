@@ -85,9 +85,6 @@ body {
 	padding-left: 1em;
 }
 
-.container {
-	position: relative;
-}
 .product {
 	border: 0px solid #F5F5F5;
 	float: left;
