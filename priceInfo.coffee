@@ -173,8 +173,17 @@ calcShoppingList = ->
 		$('#shoppinglist .list').hide()
 	else
 		total = sell - buy
+		account = +$('#shoppinglist .account input').val()
+		sub = $('#shoppinglist .account').prev()
+		if account is 0
+			sub.hide()
+		else
+			sub.text(priceFormat total).show()
+			total += account
 		$('#shoppinglist .total').text priceFormat total
 		$('#shoppinglist .list').show()
+
+$('#shoppinglist .account input').change calcShoppingList
 
 compare = (items, item1, item2) ->
 	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)

@@ -157,7 +157,7 @@
     }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
   };
   calcShoppingList = function() {
-    var buy, calcSubtotal, sell, total;
+    var account, buy, calcSubtotal, sell, sub, total;
     calcSubtotal = function(klass) {
       var result, table;
       table = $('#shoppinglist .' + klass);
@@ -174,10 +174,19 @@
       return $('#shoppinglist .list').hide();
     } else {
       total = sell - buy;
+      account = +$('#shoppinglist .account input').val();
+      sub = $('#shoppinglist .account').prev();
+      if (account === 0) {
+        sub.hide();
+      } else {
+        sub.text(priceFormat(total)).show();
+        total += account;
+      }
       $('#shoppinglist .total').text(priceFormat(total));
       return $('#shoppinglist .list').show();
     }
   };
+  $('#shoppinglist .account input').change(calcShoppingList);
   compare = function(items, item1, item2) {
     var matDifference;
     matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name);
