@@ -55,9 +55,6 @@
       return "<div class=" + c + ">" + (priceFormat(getPrice(ch1, a, t))) + "<br><span>" + (priceFormat(getPrice(ch2, a, t))) + "</span></div>";
     };
     priceLDiv = price('priceL', -1, -64);
-    if (item.name === "Yellow flower") {
-      item.picurl = "http://www.minecraftwiki.net/images/4/49/Grid_Dandelion.png";
-    }
     if (!item.picurl) {
       item.picurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png';
     }
