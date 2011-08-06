@@ -1,5 +1,89 @@
 (function() {
-  var calcShoppingList, compare, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
+  var calcShoppingList, categorisation, category, compare, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport, things;
+  categorisation = {
+    "Bakery": [
+      {
+        "mcId": 297,
+        "name": "Bread",
+        "iconUrl": "http:\/\/www.minecraftwiki.net\/images\/5\/54\/Crafting_square_Bread.png",
+        "stock": 1,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 296,
+        "name": "Wheat",
+        "iconUrl": "http:\/\/www.minecraftwiki.net\/images\/6\/6c\/Crafting_square_Wheat.png",
+        "stock": 97,
+        "tax": 0,
+        "components": []
+      }
+    ],
+    "Butcher": [
+      {
+        "mcId": 319,
+        "name": "Raw Porkchop",
+        "iconUrl": "http:\/\/www.minecraftwiki.net\/images\/f\/f5\/Crafting_square_Raw_Porkchop.png",
+        "stock": 1,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 320,
+        "name": "Cooked Porkchop",
+        "iconUrl": "http:\/\/www.minecraftwiki.net\/images\/3\/32\/Crafting_square_Cooked_Porkchop.png",
+        "stock": 1,
+        "tax": 0,
+        "components": []
+      }
+    ],
+    "Smith": [
+      {
+        "mcId": 292,
+        "name": "Iron Hoe",
+        "iconUrl": "http://www.minecraftwiki.net/images/f/f8/Grid_Iron_Hoe.png",
+        "stock": 2,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 258,
+        "name": "Iron Axe",
+        "iconUrl": "http://www.minecraftwiki.net/images/1/1d/Grid_Iron_Axe.png",
+        "stock": 5,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 256,
+        "name": "Iron Shovel",
+        "iconUrl": "http://www.minecraftwiki.net/images/0/01/Grid_Iron_Shovel.png",
+        "stock": 1,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 257,
+        "name": "Iron Pickaxe",
+        "iconUrl": "http://www.minecraftwiki.net/images/1/1d/Grid_Iron_Pickaxe.png",
+        "stock": 10,
+        "tax": 0,
+        "components": []
+      }, {
+        "mcId": 267,
+        "name": "Iron Sword",
+        "iconUrl": "http://www.minecraftwiki.net/images/d/d5/Grid_Iron_Sword.png",
+        "stock": 2,
+        "tax": 0,
+        "components": []
+      }
+    ],
+    "Jeweller": [
+      {
+        "mcId": 264,
+        "name": "Diamond",
+        "iconUrl": "http://www.minecraftwiki.net/images/c/cf/Grid_Diamond_(Gem).png",
+        "stock": 99,
+        "tax": 0,
+        "components": []
+      }
+    ]
+  };
   getPrice = function(change, amount, tax) {
     var a, b, f, price;
     a = 0.0373495858135303;
@@ -159,6 +243,9 @@
       tax: t
     }).hover(showInfoBox, hideInfoBox).click(pinInfoBox);
   };
+  generateMenuEntry = function() {
+    return false;
+  };
   $(document).click(function() {
     if (pinnedBox) {
       return $(pinnedBox).trigger('click', true);
@@ -272,83 +359,69 @@
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
-  $.getJSON('http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', function(data) {
-    var center, div, divs, e, item, items, min, prices, s, sizes, type, wdt, winwdt, _i, _j, _len, _len2;
-    wdt = 0;
-    divs = $();
-    for (type in data) {
-      items = data[type];
-      items.sort(function(x, y) {
-        return compare(items, x, y);
-      });
-      for (_i = 0, _len = items.length; _i < _len; _i++) {
-        item = items[_i];
-        div = generatePriceInfoDiv(item);
-        prices = div.children('.priceL, .priceR');
-        divs = divs.add(prices);
-        $("#" + type).append(div);
-        for (_j = 0, _len2 = prices.length; _j < _len2; _j++) {
-          e = prices[_j];
-          e = $(e);
-          if (e.width() > wdt) {
-            wdt = e.width();
-          }
-        }
-      }
-    }
-    divs.width(wdt);
-    $(document).trigger('itemsloaded');
-    $('#amountspinner').change(function() {
-      var amount;
-      amount = $(this).val();
-      if (isNaN(amount) || amount < 2) {
-        return;
-      }
-      $('.amount2').text(amount);
-      return $('.product').not('#example').each(function() {
-        var pdata;
-        e = $(this);
-        pdata = e.data('pdata');
-        $('.priceL span', e).text(priceFormat(getPrice(-amount, pdata.amount, pdata.tax)));
-        return $('.priceR span', e).text(priceFormat(getPrice(+amount, pdata.amount, pdata.tax)));
-      });
-    }).parent().submit(function(event) {
-      return event.preventDefault();
-    });
-    sizes = function() {
-      var container, cwdt, itemwdt;
-      container = $('#blocks, #items');
-      itemwdt = $('.product', container).outerWidth(true);
-      cwdt = container.width();
-      return {
-        container: container,
-        itemwdt: itemwdt,
-        cwdt: cwdt,
-        row: Math.floor(cwdt / itemwdt)
-      };
-    };
-    center = function() {
-      var s;
-      s = sizes();
-      return s.container.css('padding-left', (s.cwdt - s.row * s.itemwdt) / 2);
-    };
-    center();
-    $(window).resize(center);
-    winwdt = $(window).width();
-    if (winwdt < 800) {
-      s = sizes();
-      if (s.row < 3) {
-        min = 0;
-        if (winwdt < 300) {
-          min = 2 * s.itemwdt;
-        } else {
-          min = 3 * s.itemwdt;
-        }
-        $('body').css('min-width', min);
-        s.container.css('padding-left', 0);
-        setViewport(min);
-      }
-    }
-    return null;
-  });
+  for (category in categorisation) {
+    things = categorisation[category];
+    $("<li />").text(category).appendTo($("#categories"));
+  }
+  /*	
+  	
+  # JSONP request
+  $.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', (data) ->
+  	wdt = 0
+  	divs = $()
+  	for type, items of data
+  		items.sort (x, y) -> compare items, x, y
+  		for item in items
+  			div = generatePriceInfoDiv item
+  			prices = div.children '.priceL, .priceR'
+  			divs = divs.add prices
+  			$("##{type}").append div
+  			for e in prices
+  				e = $(e)
+  				wdt = e.width() if e.width() > wdt
+  	divs.width wdt
+  	$(document).trigger 'itemsloaded'
+  	
+  	# spinner for second price
+  	$('#amountspinner').change ->
+  		amount = $(this).val()
+  		return if isNaN(amount) or amount < 2
+  		$('.amount2').text amount
+  		$('.product').not('#example').each ->
+  			e = $(this)
+  			pdata = e.data 'pdata'
+  			$('.priceL span', e).text priceFormat getPrice -amount, pdata.amount, pdata.tax
+  			$('.priceR span', e).text priceFormat getPrice +amount, pdata.amount, pdata.tax
+  	.parent().submit (event) ->
+  		event.preventDefault()
+  	sizes = ->
+  		container = $('#blocks, #items')
+  		itemwdt = $('.product', container).outerWidth(true)
+  		cwdt = container.width()
+  		container: container
+  		itemwdt: itemwdt
+  		cwdt: cwdt
+  		row: Math.floor(cwdt/itemwdt)
+  	center = ->
+  		s = sizes()
+  		s.container.css 'padding-left', (s.cwdt - s.row*s.itemwdt)/2
+  	center()
+  	$(window).resize center
+  	
+  	# viewport for mobile browsers
+  	winwdt = $(window).width()
+  	if winwdt < 800
+  		s = sizes()
+  		if s.row < 3
+  			min = 0
+  			if winwdt < 300
+  				min = 2*s.itemwdt
+  			else
+  				min = 3*s.itemwdt
+  			$('body').css 'min-width', min
+  			s.container.css 'padding-left', 0
+  			setViewport min
+  	null
+  
+  */
 }).call(this);
