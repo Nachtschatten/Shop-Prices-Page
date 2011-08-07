@@ -249,7 +249,6 @@ setViewport = (wdt) ->
 	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
 
 for category, contents of JsonData
-	cat = category
 	$('#categories')
 	.append(
 		$('<li />')

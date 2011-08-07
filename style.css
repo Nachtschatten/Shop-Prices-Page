@@ -160,6 +160,10 @@ hr.spacer {
 	border-bottom: 1px solid #D3D3DE;
 }
 
+#categories > li {
+	cursor: pointer;
+}
+
 @media screen and (max-width: 800px) {
 	.nohighlight {
 		display: none;

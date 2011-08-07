@@ -1,5 +1,5 @@
 (function() {
-  var JsonData, calcShoppingList, cat, category, compare, contents, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
+  var JsonData, calcShoppingList, category, compare, contents, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
   JsonData = {
     "Bakery": [
       {
@@ -358,7 +358,6 @@
   };
   for (category in JsonData) {
     contents = JsonData[category];
-    cat = category;
     $('#categories').append($('<li />').text(category).click(function() {
       return $('#shopViews > div').eq($(this).index()).slideToggle();
     }));
