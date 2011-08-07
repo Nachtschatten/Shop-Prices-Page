@@ -43,10 +43,11 @@ body {
 #shoppinglist .list {
 	display: none;
 }
-#shoppinglist .tables {
-	column-count: 2;
-	/* Mozilla supports columns, but not manual breaking */
-	-webkit-column-count: 2;
+#shoppinglist .list > table {
+	width: 100%;
+}
+#shoppinglist .list > table td {
+	vertical-align: top;
 }
 #shoppinglist caption {
 	text-align: left;
@@ -56,27 +57,23 @@ body {
 	text-align: center;
 	border-collapse: collapse;
 }
-#shoppinglist tr {
-	/* Opera even breaks tables */
-	break-after: avoid;
-}
 #shoppinglist th {
 	min-width: 3em;
 }
 #shoppinglist tr+tr td {
 	border-top: 1px solid grey;
 }
-#shoppinglist .subtotal {
+#shoppinglist .space {
+	width: 1em;
+}
+#shoppinglist div.subtotal {
 	border-top: 1px solid black;
 	padding-left: 1em;
 	margin: 1em 0;
-	break-before: avoid;
-	break-after: always;
-	/* those are currently ignored by all browsers */
-	column-break-before: avoid;
-	column-break-after: always;
-	-webkit-column-break-before: avoid;
-	-webkit-column-break-after: always;
+}
+#shoppinglist tr.subtotal > td{
+	padding-left: 1em;
+	text-align: left;
 }
 #shoppinglist .total {
 	border-top: 3px solid black;
