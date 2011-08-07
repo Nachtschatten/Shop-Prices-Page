@@ -1,6 +1,6 @@
 (function() {
-  var calcShoppingList, categorisation, category, compare, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport, things;
-  categorisation = {
+  var JsonData, calcShoppingList, cat, category, compare, contents, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
+  JsonData = {
     "Bakery": [
       {
         "mcId": 297,
@@ -356,9 +356,13 @@
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
-  for (category in categorisation) {
-    things = categorisation[category];
-    $("<li />").text(category).appendTo($("#categories"));
+  for (category in JsonData) {
+    contents = JsonData[category];
+    cat = category;
+    $('#categories').append($('<li />').text(category).click(function() {
+      return $('#shopViews > div').eq($(this).index()).slideToggle();
+    }));
+    $('#shopViews').append($('<hr class="spacer" />')).append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category));
   }
   /*	
   	

@@ -1,4 +1,4 @@
-categorisation = {
+JsonData = {
 	"Bakery"	: [
 		{ "mcId" : 297, "name" : "Bread", "iconUrl" : "http:\/\/www.minecraftwiki.net\/images\/5\/54\/Crafting_square_Bread.png", "stock" : 1, "tax" : 0, "components" : [] },
 		{ "mcId" : 296, "name" : "Wheat", "iconUrl" : "http:\/\/www.minecraftwiki.net\/images\/6\/6c\/Crafting_square_Wheat.png", "stock" : 97, "tax" : 0, "components" : [] }
@@ -248,10 +248,24 @@ getMaterialValue = (name) ->
 setViewport = (wdt) ->
 	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
 
-for category, things of categorisation
-	$("<li />")
-	.text(category)
-	.appendTo($("#categories"))
+for category, contents of JsonData
+	cat = category
+	$('#categories')
+	.append(
+		$('<li />')
+		.text(category)
+		.click( ->
+			$('#shopViews > div').eq( $(this).index() ).slideToggle()
+		)
+	)
+	$('#shopViews')
+	.append(
+		$('<hr class="spacer" />')
+	)
+	.append(
+		$('<div id="' + category + 'View" class="shopView" />')
+		.text('div for ' + category)
+	)
 
 ###	
 	
