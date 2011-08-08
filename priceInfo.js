@@ -175,26 +175,30 @@
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
   data.load(function() {
-    var center, div, divs, e, id, item, min, prices, s, sizes, wdt, winwdt, _i, _len, _ref;
-    wdt = 0;
-    divs = $();
-    _ref = data.items;
-    for (id in _ref) {
-      item = _ref[id];
-      div = generatePriceInfoDiv(item);
-      prices = div.children('.priceL, .priceR');
-      divs = divs.add(prices);
-      $("#items").append(div);
-      for (_i = 0, _len = prices.length; _i < _len; _i++) {
-        e = prices[_i];
-        e = $(e);
-        if (e.width() > wdt) {
-          wdt = e.width();
+    var sizes;
+    (function() {
+      var div, divs, e, id, item, prices, wdt, _i, _len, _ref;
+      wdt = 0;
+      divs = $();
+      _ref = data.items;
+      for (id in _ref) {
+        item = _ref[id];
+        div = generatePriceInfoDiv(item);
+        item.e = div;
+        prices = div.children('.priceL, .priceR');
+        divs = divs.add(prices);
+        $("#items").append(div);
+        for (_i = 0, _len = prices.length; _i < _len; _i++) {
+          e = prices[_i];
+          e = $(e);
+          if (e.width() > wdt) {
+            wdt = e.width();
+          }
         }
       }
-    }
-    divs.width(wdt);
-    $(document).trigger('itemsloaded');
+      divs.width(wdt);
+      return $(document).trigger('itemsloaded');
+    })();
     $('#amountspinner').change(function() {
       var amount;
       amount = $(this).val();
@@ -203,6 +207,7 @@
       }
       $('.amount2').text(amount);
       return $('.product').not('#example').each(function() {
+        var e, item;
         e = $(this);
         item = e.data('item');
         $('.priceL span', e).text(priceFormat(item.getPrice(-amount)));
@@ -223,28 +228,66 @@
         row: Math.floor(cwdt / itemwdt)
       };
     };
-    center = function() {
-      var s;
-      s = sizes();
-      return s.container.css('padding-left', (s.cwdt - s.row * s.itemwdt) / 2);
-    };
-    center();
-    $(window).resize(center);
-    winwdt = $(window).width();
-    if (winwdt < 800) {
-      s = sizes();
-      if (s.row < 3) {
-        min = 0;
-        if (winwdt < 300) {
-          min = 2 * s.itemwdt;
-        } else {
-          min = 3 * s.itemwdt;
-        }
-        $('body').css('min-width', min);
-        s.container.css('padding-left', 0);
-        setViewport(min);
+    (function() {
+      var center;
+      center = function() {
+        var s;
+        s = sizes();
+        return s.container.css('padding-left', (s.cwdt - s.row * s.itemwdt) / 2);
+      };
+      center();
+      return $(window).resize(center);
+    })();
+    (function() {
+      var e, key, selected, shop, shops, _fn, _ref;
+      shops = $('#shops');
+      _ref = data.shops;
+      _fn = function(shop, e) {
+        return e.click(function() {
+          var ch, item, _i, _len, _ref2;
+          e.toggleClass('selected');
+          ch = e.hasClass('selected') ? 1 : -1;
+          _ref2 = shop.getItems();
+          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+            item = _ref2[_i];
+            item.shopSelected += ch;
+            if (isNaN(item.shopSelected)) {
+              item.shopSelected = 1;
+            }
+            item.e.toggleClass('selected', item.shopSelected > 0);
+          }
+          selected += ch;
+          return $('#items').toggleClass('hideItems', selected > 0);
+        });
+      };
+      for (key in _ref) {
+        shop = _ref[key];
+        e = $("<div class=shop>" + shop.name + "</div>");
+        shops.append(e);
+        shop.e = e;
+        selected = 0;
+        _fn(shop, e);
       }
-    }
+      return null;
+    })();
+    (function() {
+      var min, s, winwdt;
+      winwdt = $(window).width();
+      if (winwdt < 800) {
+        s = sizes();
+        if (s.row < 3) {
+          min = 0;
+          if (winwdt < 300) {
+            min = 2 * s.itemwdt;
+          } else {
+            min = 3 * s.itemwdt;
+          }
+          $('body').css('min-width', min);
+          s.container.css('padding-left', 0);
+          return setViewport(min);
+        }
+      }
+    })();
     return null;
   });
 }).call(this);

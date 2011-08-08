@@ -81,8 +81,36 @@ body {
 	padding-left: 1em;
 }
 
+#shops {
+	text-align: center;
+}
+#shops > div {
+	display: inline-block;
+	padding: 0.5em 2em;
+	margin: 0.5em 1em;
+	color: white;
+	background-color: #0080FF;
+	border-radius: 5px;
+	box-shadow: 5px 5px 10px 5px black;
+	cursor: pointer;
+	transition: box-shadow, background-color 0.25s ease;
+	-moz-transition: box-shadow, background-color 0.25s ease;
+	-o-transition: box-shadow, background-color 0.25s ease;
+	-webkit-transition: box-shadow, background-color 0.25s ease;
+}
+#shops > div:hover {
+	background-color: #0067B0;
+}
+#shops > div.selected {
+	background-color: #005880;
+	box-shadow: 2px 2px 5px 0 black;
+}
+
 .relative {
 	position: relative;
+}
+.hideItems .product:not(.selected) {
+	display: none;
 }
 .product {
 	border: 0px solid #F5F5F5;

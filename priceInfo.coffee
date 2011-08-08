@@ -178,18 +178,20 @@ setViewport = (wdt) ->
 
 # JSONP request
 data.load ->
-	wdt = 0
-	divs = $()
-	for id, item of data.items
-		div = generatePriceInfoDiv item
-		prices = div.children '.priceL, .priceR'
-		divs = divs.add prices
-		$("#items").append div
-		for e in prices
-			e = $(e)
-			wdt = e.width() if e.width() > wdt
-	divs.width wdt
-	$(document).trigger 'itemsloaded'
+	do ->
+		wdt = 0
+		divs = $()
+		for id, item of data.items
+			div = generatePriceInfoDiv item
+			item.e = div
+			prices = div.children '.priceL, .priceR'
+			divs = divs.add prices
+			$("#items").append div
+			for e in prices
+				e = $(e)
+				wdt = e.width() if e.width() > wdt
+		divs.width wdt
+		$(document).trigger 'itemsloaded'
 	
 	# spinner for second price
 	$('#amountspinner').change ->
@@ -211,23 +213,46 @@ data.load ->
 		itemwdt: itemwdt
 		cwdt: cwdt
 		row: Math.floor(cwdt/itemwdt)
-	center = ->
-		s = sizes()
-		s.container.css 'padding-left', (s.cwdt - s.row*s.itemwdt)/2
-	center()
-	$(window).resize center
+	do ->
+		center = ->
+			s = sizes()
+			s.container.css 'padding-left', (s.cwdt - s.row*s.itemwdt)/2
+		center()
+		$(window).resize center
+	
+	# shop selection
+	do ->
+		shops = $('#shops')
+		for key, shop of data.shops
+			e = $("<div class=shop>#{shop.name}</div>")
+			shops.append e
+			shop.e = e
+			selected = 0
+			((shop, e) ->
+				e.click ->
+					e.toggleClass 'selected'
+					ch = if e.hasClass 'selected' then 1 else -1
+					for item in shop.getItems()
+						item.shopSelected += ch
+						item.shopSelected = 1 if isNaN item.shopSelected
+						item.e.toggleClass 'selected', item.shopSelected > 0
+					selected += ch
+					$('#items').toggleClass 'hideItems', selected > 0
+			)(shop, e)
+		null
 	
 	# viewport for mobile browsers
-	winwdt = $(window).width()
-	if winwdt < 800
-		s = sizes()
-		if s.row < 3
-			min = 0
-			if winwdt < 300
-				min = 2*s.itemwdt
-			else
-				min = 3*s.itemwdt
-			$('body').css 'min-width', min
-			s.container.css 'padding-left', 0
-			setViewport min
+	do ->
+		winwdt = $(window).width()
+		if winwdt < 800
+			s = sizes()
+			if s.row < 3
+				min = 0
+				if winwdt < 300
+					min = 2*s.itemwdt
+				else
+					min = 3*s.itemwdt
+				$('body').css 'min-width', min
+				s.container.css 'padding-left', 0
+				setViewport min
 	null
