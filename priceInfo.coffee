@@ -1,19 +1,4 @@
 
-getPrice = (change, amount, tax) ->
-	a = 0.0373495858135303
-	b = 0.731944262776933
-	# f(x) = log(x + a/x^b)
-	f = (x) -> Math.log(x + a/Math.pow(x, b))
-	
-	return 0 if change is 0
-	if change > 0 # sell
-		price = f(amount+change+0.5) - f(amount+0.5)
-	else # buy
-		price = f(amount+0.5) - f(amount+change+0.5)
-		price *= 1 + tax/100
-	price *= 10000
-	Math.round price
-
 priceFormat = (p) ->
 	return '' if isNaN p
 	p = ''+p
@@ -35,14 +20,11 @@ priceFormat = (p) ->
 
 pinnedBox = null
 generatePriceInfoDiv = (item) ->
-	a = item.amount
-	# tax isn't currently included
-	t = item.tax or 16
 	price = (c, ch1, ch2) ->
-		"<div class=#{c}>#{priceFormat getPrice ch1, a, t}<br><span>#{priceFormat getPrice ch2, a, t}</span></div>"
+		"<div class=#{c}>#{priceFormat item.getPrice ch1}<br><span>#{priceFormat item.getPrice ch2}</span></div>"
 	priceLDiv = price 'priceL', -1, -64
-	item.picurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png' unless item.picurl
-	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
+	item.imgurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png' unless item.imgurl
+	iconDiv = "<div class=icon><img src='#{item.imgurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
 	
 	# horizontally centers the box according to its content relative to the product
@@ -115,11 +97,11 @@ generatePriceInfoDiv = (item) ->
 		# either + for sell or - for buy
 		mode = $('input:radio:checked', form).val()
 		# contains amount and tax needed for price calculations
-		pdata = product.data('pdata')
+		item = product.data('item')
 		# enough in stock?
-		if mode is '-' and pdata.amount < amount
+		if mode is '-' and item.amount < amount
 			# set to the highest possible value
-			amount = pdata.amount
+			amount = item.amount
 			ninput.val amount
 		# hide the results when the user sets 0
 		unless +amount
@@ -137,7 +119,7 @@ generatePriceInfoDiv = (item) ->
 		# hide the "click me"-hint
 		form.siblings('.siminfo').removeClass 'toggle'
 		# calculate price by combining the sign with the amount (both strings) and casting to a number
-		price = getPrice +(mode+amount), pdata.amount, pdata.tax
+		price = item.getPrice +(mode+amount)
 		# output below the form
 		formatted = priceFormat price
 		form.siblings('.price').show().text formatted
@@ -153,7 +135,7 @@ generatePriceInfoDiv = (item) ->
 		calcShoppingList()
 	
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>')
-		.data('pdata', amount: a, tax: t)
+		.data('item', item)
 		.hover(showInfoBox, hideInfoBox)
 		.click(pinInfoBox)
 
@@ -190,55 +172,22 @@ calcShoppingList = ->
 
 $('#shoppinglist .account input').change calcShoppingList
 
-compare = (items, item1, item2) ->
-	matDifference = getMaterialValue(item1.name) - getMaterialValue(item2.name)
-	if matDifference is 0
-		return item1.id - item2.id
-	return matDifference
-
-getMaterialValue = (name) ->
-	name = name.toLowerCase()
-	nameContains = ->
-		for word in arguments
-			return true if name.indexOf(word) isnt -1
-		false
-	
-	return  1 if nameContains 'sapling'
-	return  2 if nameContains 'leaves', 'birch tree', 'redwood tree'
-	return  3 if nameContains('workbench', 'furnace', 'chest', 'dispenser') and not nameContains 'plate'
-	return  4 if nameContains 'jukebox', 'note block'
-	return  5 if nameContains 'rail'
-	return  6 if nameContains 'bucket'
-	return  7 if nameContains 'music disc'
-	return  8 if nameContains 'minecart'
-	return 15 if nameContains 'leather'
-	return 20 if nameContains('wood') or name is 'birch'
-	return 25 if nameContains 'sand'
-	return 30 if nameContains('stone') and not nameContains 'redstone'
-	return 30 if nameContains 'rack'
-	return 35 if nameContains 'iron'
-	return 40 if nameContains 'diamond'
-	return 45 if nameContains 'gold'
-	return  0
-
 # unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
 setViewport = (wdt) ->
 	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
 
 # JSONP request
-$.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', (data) ->
+data.load ->
 	wdt = 0
 	divs = $()
-	for type, items of data
-		items.sort (x, y) -> compare items, x, y
-		for item in items
-			div = generatePriceInfoDiv item
-			prices = div.children '.priceL, .priceR'
-			divs = divs.add prices
-			$("##{type}").append div
-			for e in prices
-				e = $(e)
-				wdt = e.width() if e.width() > wdt
+	for id, item of data.items
+		div = generatePriceInfoDiv item
+		prices = div.children '.priceL, .priceR'
+		divs = divs.add prices
+		$("#items").append div
+		for e in prices
+			e = $(e)
+			wdt = e.width() if e.width() > wdt
 	divs.width wdt
 	$(document).trigger 'itemsloaded'
 	
@@ -249,9 +198,9 @@ $.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', 
 		$('.amount2').text amount
 		$('.product').not('#example').each ->
 			e = $(this)
-			pdata = e.data 'pdata'
-			$('.priceL span', e).text priceFormat getPrice -amount, pdata.amount, pdata.tax
-			$('.priceR span', e).text priceFormat getPrice +amount, pdata.amount, pdata.tax
+			item = e.data 'item'
+			$('.priceL span', e).text priceFormat item.getPrice -amount
+			$('.priceR span', e).text priceFormat item.getPrice +amount
 	.parent().submit (event) ->
 		event.preventDefault()
 	sizes = ->
