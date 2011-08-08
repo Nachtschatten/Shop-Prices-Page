@@ -38,8 +38,8 @@ class Item
 			--@amount
 	
 class Shop
-	constructor: (@id, @name) ->
-		
+	constructor: (id, @name) ->
+		@id = +id
 	getItems: ->
 		item for key, item of data.items when @id in item.shops
 

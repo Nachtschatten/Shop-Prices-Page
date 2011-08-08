@@ -73,8 +73,8 @@
   })();
   Shop = (function() {
     function Shop(id, name) {
-      this.id = id;
       this.name = name;
+      this.id = +id;
     }
     Shop.prototype.getItems = function() {
       var item, key, _ref, _ref2, _results;
