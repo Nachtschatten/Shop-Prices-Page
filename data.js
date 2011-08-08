@@ -16,6 +16,9 @@
     }
     Item.prototype.getPrice = function(change) {
       var a, b, f, price;
+      if (this.components) {
+        return this.getCompoundPrice(change);
+      }
       a = 0.0373495858135303;
       b = 0.731944262776933;
       f = function(x) {
@@ -32,6 +35,39 @@
       }
       price *= 10000;
       return Math.round(price);
+    };
+    Item.prototype.getCompoundPrice = function(change) {
+      var component, id, item, num, price, _i, _len, _ref;
+      if (!this.components) {
+        return this.getPrice(change);
+      }
+      if (change === 0) {
+        return 0;
+      }
+      price = 0;
+      _ref = this.components;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        component = _ref[_i];
+        id = component[0], num = component[1];
+        item = data.items[id];
+        if (!item) {
+          return NaN;
+        }
+        price += item.getPrice(change * num);
+        if (isNaN(price)) {
+          return NaN;
+        }
+      }
+      return price;
+    };
+    Item.prototype.calcAmount = function() {
+      if (this.components) {
+        this.amount = 0;
+        while (this.getCompoundPrice(-++this.amount)) {
+          null;
+        }
+        return --this.amount;
+      }
     };
     return Item;
   })();
@@ -57,19 +93,28 @@
   window.data = {
     load: function(fn) {
       return $.getJSON('http://localhost/price_json.php?callback=?', function(data) {
-        var key, val, _ref, _ref2;
+        var compound, item, key, val, _i, _len, _ref, _ref2;
         _ref = data.shops;
         for (key in _ref) {
           val = _ref[key];
           data.shops[key] = new Shop(key, val);
         }
+        compound = [];
         _ref2 = data.items;
         for (key in _ref2) {
           val = _ref2[key];
-          data.items[key] = new Item(val);
+          item = new Item(val);
+          data.items[key] = item;
+          if (item.components) {
+            compound.push(item);
+          }
         }
         window.data.shops = data.shops;
         window.data.items = data.items;
+        for (_i = 0, _len = compound.length; _i < _len; _i++) {
+          item = compound[_i];
+          item.calcAmount();
+        }
         return fn();
       });
     }
