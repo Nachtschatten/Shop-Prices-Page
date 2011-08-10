@@ -244,15 +244,15 @@ getMaterialValue = (name) ->
 	return 45 if nameContains 'gold'
 	return  0
 
-toggleShopView = (index, toggleHideThis, hideOthers) ->
+toggleShopView = (index, toggleShowThis, hideOthers) ->
 	$('#categories > li').each( ->
 		shopView = $('#shopViews > div').eq( $(this).index() )
 		if $(this).index() is index
-			if toggleHideThis is true
-				shopView.slideUp()
-			else
+			if toggleShowThis is true
 				shopView.slideDown()
 				$(this).find('input').attr('checked', true)
+			else
+				shopView.slideUp()
 		else if hideOthers is true
 			shopView.slideUp()
 			$(this).find('input').attr('checked', false)
@@ -268,10 +268,10 @@ for category, contents of JsonData
 		$('<li />')
 		.click( (event) ->
 			if event.target.tagName.toLowerCase() is 'span'
-				toggleShopView( $(this).index(), false, true )
+				toggleShopView( $(this).index(), true, true )
 			else if event.target.tagName.toLowerCase() is 'input'
 				checkbox = $(event.target)
-				toggleShopView( $(this).index(), not checkbox.is(':checked'), false )
+				toggleShopView( $(this).index(), checkbox.is(':checked'), false )
 		)
 		.append( $('<input type="checkbox" name="' + category + '" value="' + category + '" />') )
 		.append(

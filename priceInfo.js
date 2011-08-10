@@ -353,16 +353,16 @@
     }
     return 0;
   };
-  toggleShopView = function(index, toggleHideThis, hideOthers) {
+  toggleShopView = function(index, toggleShowThis, hideOthers) {
     return $('#categories > li').each(function() {
       var shopView;
       shopView = $('#shopViews > div').eq($(this).index());
       if ($(this).index() === index) {
-        if (toggleHideThis === true) {
-          return shopView.slideUp();
-        } else {
+        if (toggleShowThis === true) {
           shopView.slideDown();
           return $(this).find('input').attr('checked', true);
+        } else {
+          return shopView.slideUp();
         }
       } else if (hideOthers === true) {
         shopView.slideUp();
@@ -378,10 +378,10 @@
     $('#categories').append($('<li />').click(function(event) {
       var checkbox;
       if (event.target.tagName.toLowerCase() === 'span') {
-        return toggleShopView($(this).index(), false, true);
+        return toggleShopView($(this).index(), true, true);
       } else if (event.target.tagName.toLowerCase() === 'input') {
         checkbox = $(event.target);
-        return toggleShopView($(this).index(), !checkbox.is(':checked'), false);
+        return toggleShopView($(this).index(), checkbox.is(':checked'), false);
       }
     }).append($('<input type="checkbox" name="' + category + '" value="' + category + '" />')).append($('<span />').text(category)));
     $('#shopViews').append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category).hide());
