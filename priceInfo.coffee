@@ -271,10 +271,7 @@ for category, contents of JsonData
 				toggleShopView( $(this).index(), false, true )
 			else if event.target.tagName.toLowerCase() is 'input'
 				checkbox = $(event.target)
-				if checkbox.is(':checked')
-					toggleShopView( $(this).index(), false, false )
-				else
-					toggleShopView( $(this).index(), true, false )
+				toggleShopView( $(this).index(), not checkbox.is(':checked'), false )
 		)
 		.append( $('<input type="checkbox" name="' + category + '" value="' + category + '" />') )
 		.append(

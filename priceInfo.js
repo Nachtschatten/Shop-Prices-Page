@@ -381,11 +381,7 @@
         return toggleShopView($(this).index(), false, true);
       } else if (event.target.tagName.toLowerCase() === 'input') {
         checkbox = $(event.target);
-        if (checkbox.is(':checked')) {
-          return toggleShopView($(this).index(), false, false);
-        } else {
-          return toggleShopView($(this).index(), true, false);
-        }
+        return toggleShopView($(this).index(), !checkbox.is(':checked'), false);
       }
     }).append($('<input type="checkbox" name="' + category + '" value="' + category + '" />')).append($('<span />').text(category)));
     $('#shopViews').append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category).hide());
