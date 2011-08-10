@@ -165,7 +165,7 @@ hr.spacer {
 	border-bottom: 1px solid #D3D3DE;
 }
 
-#categories > li {
+#categories > li > span{
 	cursor: pointer;
 }
 
