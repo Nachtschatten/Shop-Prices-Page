@@ -196,13 +196,15 @@ data.load ->
 	# spinner for second price
 	$('#amountspinner').change ->
 		amount = $(this).val()
-		return if isNaN(amount) or amount < 2
+		return if isNaN(amount) or amount < 2 or amount is '64' and isNaN(localStorage['mcshop.amount2'])
+		localStorage['mcshop.amount2'] = amount
 		$('.amount2').text amount
 		$('.product').not('#example').each ->
 			e = $(this)
 			item = e.data 'item'
 			$('.priceL span', e).text priceFormat item.getPrice -amount
 			$('.priceR span', e).text priceFormat item.getPrice +amount
+	.val(+localStorage['mcshop.amount2'] or 64).change()
 	.parent().submit (event) ->
 		event.preventDefault()
 	sizes = ->

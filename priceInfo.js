@@ -202,9 +202,10 @@
     $('#amountspinner').change(function() {
       var amount;
       amount = $(this).val();
-      if (isNaN(amount) || amount < 2) {
+      if (isNaN(amount) || amount < 2 || amount === '64' && isNaN(localStorage['mcshop.amount2'])) {
         return;
       }
+      localStorage['mcshop.amount2'] = amount;
       $('.amount2').text(amount);
       return $('.product').not('#example').each(function() {
         var e, item;
@@ -213,7 +214,7 @@
         $('.priceL span', e).text(priceFormat(item.getPrice(-amount)));
         return $('.priceR span', e).text(priceFormat(item.getPrice(+amount)));
       });
-    }).parent().submit(function(event) {
+    }).val(+localStorage['mcshop.amount2'] || 64).change().parent().submit(function(event) {
       return event.preventDefault();
     });
     sizes = function() {
