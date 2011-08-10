@@ -266,24 +266,17 @@ for category, contents of JsonData
 	$('#categories')
 	.append(
 		$('<li />')
-		#.text(category)
 		.click( (event) ->
 			if event.target.tagName.toLowerCase() is 'span'
 				toggleShopView( $(this).index(), false, true )
+			else if event.target.tagName.toLowerCase() is 'input'
+				checkbox = $(event.target)
+				if checkbox.is(':checked')
+					toggleShopView( $(this).index(), false, false )
+				else
+					toggleShopView( $(this).index(), true, false )
 		)
-		.append(
-			$('<input type="checkbox" name="' + category + '" value="' + category + '" />')
-			.click( (event) ->
-				if event.target.tagName.toLowerCase() is 'input'
-					checkbox = $(event.target)
-					if checkbox.is(':checked')
-						console.log event.target.name + ' is checked'
-						toggleShopView( checkbox.parent().index(), false, false )
-					else
-						console.log event.target.name + ' is unchecked'
-						toggleShopView( checkbox.parent().index(), true, false )
-			)
-		)
+		.append( $('<input type="checkbox" name="' + category + '" value="' + category + '" />') )
 		.append(
 			$('<span />')
 			.text(category)

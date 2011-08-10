@@ -376,22 +376,18 @@
   for (category in JsonData) {
     contents = JsonData[category];
     $('#categories').append($('<li />').click(function(event) {
+      var checkbox;
       if (event.target.tagName.toLowerCase() === 'span') {
         return toggleShopView($(this).index(), false, true);
-      }
-    }).append($('<input type="checkbox" name="' + category + '" value="' + category + '" />').click(function(event) {
-      var checkbox;
-      if (event.target.tagName.toLowerCase() === 'input') {
+      } else if (event.target.tagName.toLowerCase() === 'input') {
         checkbox = $(event.target);
         if (checkbox.is(':checked')) {
-          console.log(event.target.name + ' is checked');
-          return toggleShopView(checkbox.parent().index(), false, false);
+          return toggleShopView($(this).index(), false, false);
         } else {
-          console.log(event.target.name + ' is unchecked');
-          return toggleShopView(checkbox.parent().index(), true, false);
+          return toggleShopView($(this).index(), true, false);
         }
       }
-    })).append($('<span />').text(category)));
+    }).append($('<input type="checkbox" name="' + category + '" value="' + category + '" />')).append($('<span />').text(category)));
     $('#shopViews').append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category).hide());
   }
   /*	
