@@ -1,5 +1,5 @@
 (function() {
-  var JsonData, calcShoppingList, category, compare, contents, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport;
+  var JsonData, calcShoppingList, category, compare, contents, generateMenuEntry, generatePriceInfoDiv, getMaterialValue, getPrice, pinnedBox, priceFormat, setViewport, toggleShopView;
   JsonData = {
     "Bakery": [
       {
@@ -353,15 +353,46 @@
     }
     return 0;
   };
+  toggleShopView = function(index, toggleHideThis, hideOthers) {
+    return $('#categories > li').each(function() {
+      var shopView;
+      shopView = $('#shopViews > div').eq($(this).index());
+      if ($(this).index() === index) {
+        if (toggleHideThis === true) {
+          return shopView.slideUp();
+        } else {
+          shopView.slideDown();
+          return $(this).find('input').attr('checked', true);
+        }
+      } else if (hideOthers === true) {
+        shopView.slideUp();
+        return $(this).find('input').attr('checked', false);
+      }
+    });
+  };
   setViewport = function(wdt) {
     return $('meta[name=viewport]').attr('content', "width=" + wdt);
   };
   for (category in JsonData) {
     contents = JsonData[category];
-    $('#categories').append($('<li />').text(category).click(function() {
-      return $('#shopViews > div').eq($(this).index()).slideToggle();
-    }));
-    $('#shopViews').append($('<hr class="spacer" />')).append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category));
+    $('#categories').append($('<li />').click(function(event) {
+      if (event.target.tagName.toLowerCase() === 'span') {
+        return toggleShopView($(this).index(), false, true);
+      }
+    }).append($('<input type="checkbox" name="' + category + '" value="' + category + '" />').click(function(event) {
+      var checkbox;
+      if (event.target.tagName.toLowerCase() === 'input') {
+        checkbox = $(event.target);
+        if (checkbox.is(':checked')) {
+          console.log(event.target.name + ' is checked');
+          return toggleShopView(checkbox.parent().index(), false, false);
+        } else {
+          console.log(event.target.name + ' is unchecked');
+          return toggleShopView(checkbox.parent().index(), true, false);
+        }
+      }
+    })).append($('<span />').text(category)));
+    $('#shopViews').append($('<div id="' + category + 'View" class="shopView" />').text('div for ' + category).hide());
   }
   /*	
   	

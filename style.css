@@ -153,6 +153,11 @@ body {
 	border-top: 3px solid black;
 }
 
+div.shopView {
+    border: 1px dashed gray;
+    margin-top: 1em;
+}
+
 hr.spacer {
 	clear: left;
 	height: 1.2em;

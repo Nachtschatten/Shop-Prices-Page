@@ -244,6 +244,20 @@ getMaterialValue = (name) ->
 	return 45 if nameContains 'gold'
 	return  0
 
+toggleShopView = (index, toggleHideThis, hideOthers) ->
+	$('#categories > li').each( ->
+		shopView = $('#shopViews > div').eq( $(this).index() )
+		if $(this).index() is index
+			if toggleHideThis is true
+				shopView.slideUp()
+			else
+				shopView.slideDown()
+				$(this).find('input').attr('checked', true)
+		else if hideOthers is true
+			shopView.slideUp()
+			$(this).find('input').attr('checked', false)
+	)
+
 # unfortunately, this has no effect except on iPhone, Android and Palm (according to QuirksMode)
 setViewport = (wdt) ->
 	$('meta[name=viewport]').attr 'content', "width=#{wdt}"
@@ -252,18 +266,34 @@ for category, contents of JsonData
 	$('#categories')
 	.append(
 		$('<li />')
-		.text(category)
-		.click( ->
-			$('#shopViews > div').eq( $(this).index() ).slideToggle()
+		#.text(category)
+		.click( (event) ->
+			if event.target.tagName.toLowerCase() is 'span'
+				toggleShopView( $(this).index(), false, true )
+		)
+		.append(
+			$('<input type="checkbox" name="' + category + '" value="' + category + '" />')
+			.click( (event) ->
+				if event.target.tagName.toLowerCase() is 'input'
+					checkbox = $(event.target)
+					if checkbox.is(':checked')
+						console.log event.target.name + ' is checked'
+						toggleShopView( checkbox.parent().index(), false, false )
+					else
+						console.log event.target.name + ' is unchecked'
+						toggleShopView( checkbox.parent().index(), true, false )
+			)
+		)
+		.append(
+			$('<span />')
+			.text(category)
 		)
 	)
 	$('#shopViews')
 	.append(
-		$('<hr class="spacer" />')
-	)
-	.append(
 		$('<div id="' + category + 'View" class="shopView" />')
 		.text('div for ' + category)
+		.hide()
 	)
 
 ###	
