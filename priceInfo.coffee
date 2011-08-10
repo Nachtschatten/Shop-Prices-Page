@@ -230,6 +230,7 @@ data.load ->
 			selected = 0
 			((shop, e) ->
 				e.click ->
+					# single click adds/removes a shop from the selection
 					e.toggleClass 'selected'
 					ch = if e.hasClass 'selected' then 1 else -1
 					for item in shop.getItems()
@@ -238,6 +239,12 @@ data.load ->
 						item.e.toggleClass 'selected', item.shopSelected > 0
 					selected += ch
 					$('#items').toggleClass 'hideItems', selected > 0
+				e.dblclick ->
+					# double click deselects all other shops
+					$('#shops .shop.selected').not(e).click()
+					e.click() unless e.hasClass 'selected'
+				# prevent text selection
+				e.mousedown -> false
 			)(shop, e)
 		null
 	

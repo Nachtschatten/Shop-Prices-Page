@@ -243,7 +243,7 @@
       shops = $('#shops');
       _ref = data.shops;
       _fn = function(shop, e) {
-        return e.click(function() {
+        e.click(function() {
           var ch, item, _i, _len, _ref2;
           e.toggleClass('selected');
           ch = e.hasClass('selected') ? 1 : -1;
@@ -258,6 +258,15 @@
           }
           selected += ch;
           return $('#items').toggleClass('hideItems', selected > 0);
+        });
+        e.dblclick(function() {
+          $('#shops .shop.selected').not(e).click();
+          if (!e.hasClass('selected')) {
+            return e.click();
+          }
+        });
+        return e.mousedown(function() {
+          return false;
         });
       };
       for (key in _ref) {
