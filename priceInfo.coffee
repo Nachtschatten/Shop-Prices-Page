@@ -230,7 +230,7 @@ data.load ->
 			shops.append e
 			shop.e = e
 			selected = 0
-			((shop, e) ->
+			do (shop, e) ->
 				e.click ->
 					# single click adds/removes a shop from the selection
 					e.toggleClass 'selected'
@@ -247,7 +247,6 @@ data.load ->
 					e.click() unless e.hasClass 'selected'
 				# prevent text selection
 				e.mousedown -> false
-			)(shop, e)
 		null
 	
 	# viewport for mobile browsers
