@@ -4,7 +4,7 @@ getPrice = (change, amount, tax) ->
 	b = 0.731944262776933
 	# f(x) = log(x + a/x^b)
 	f = (x) -> Math.log(x + a/Math.pow(x, b))
-	
+
 	return 0 if change is 0
 	if change > 0 # sell
 		price = f(amount+change+0.5) - f(amount+0.5)
@@ -44,7 +44,7 @@ generatePriceInfoDiv = (item) ->
 	item.picurl = 'http://tools.michaelzinn.de/mc/shopadmin/itempics/unknown.png' unless item.picurl
 	iconDiv = "<div class=icon><img src='#{item.picurl}' alt='#{item.name}' title='#{item.name}'></div>"
 	priceRDiv = price 'priceR', 1, 64
-	
+
 	# horizontally centers the box according to its content relative to the product
 	positionBox = (product) ->
 		box = product.data 'infobox'
@@ -151,7 +151,7 @@ generatePriceInfoDiv = (item) ->
 		listitem.remove() if listitem
 		product.data 'listitem', tr
 		calcShoppingList()
-	
+
 	return $('<div class=product>' + priceLDiv + iconDiv + priceRDiv + '</div>')
 		.data('pdata', amount: a, tax: t)
 		.hover(showInfoBox, hideInfoBox)
@@ -202,7 +202,7 @@ getMaterialValue = (name) ->
 		for word in arguments
 			return true if name.indexOf(word) isnt -1
 		false
-	
+
 	return  1 if nameContains 'sapling'
 	return  2 if nameContains 'leaves', 'birch tree', 'redwood tree'
 	return  3 if nameContains('workbench', 'furnace', 'chest', 'dispenser') and not nameContains 'plate'
@@ -241,7 +241,7 @@ $.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', 
 				wdt = e.width() if e.width() > wdt
 	divs.width wdt
 	$(document).trigger 'itemsloaded'
-	
+
 	# spinner for second price
 	$('#amountspinner').change ->
 		amount = $(this).val()
@@ -267,7 +267,7 @@ $.getJSON 'http://tools.michaelzinn.de/mc/shopadmin/price_json.php?callback=?', 
 		s.container.css 'padding-left', (s.cwdt - s.row*s.itemwdt)/2
 	center()
 	$(window).resize center
-	
+
 	# viewport for mobile browsers
 	winwdt = $(window).width()
 	if winwdt < 800
